@@ -31,13 +31,6 @@ int Height;   //Add to this for each new element.
     ImageDownload *ImageDownloader = [[ImageDownload alloc] init];
     ImageDownloader.urlString = selectedImage;
     ImageDownloader.imageView = Image;
-    
-    UIActivityIndicatorView *activityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
-    [activityIndicator setCenter:CGPointMake(281, 34)];
-    [self.view addSubview:activityIndicator];
-    ImageDownloader.activityIndicator = activityIndicator;
-    [activityIndicator startAnimating];
-    
     if (ImageDownloader.image == nil) {
         ImageDownloader.delegate = self;
     }
@@ -93,7 +86,7 @@ int Height;   //Add to this for each new element.
 }
 
 - (void)downloadDidFinishDownloading:(ImageDownload *)download  {
-    if (download.image != nil) {
+    if (download.image != nil && [download.activityIndicator isAnimating]) {
         [download.activityIndicator stopAnimating];
         [download.activityIndicator release];
     }
@@ -127,12 +120,6 @@ int Height;   //Add to this for each new element.
 
 
 - (void)dealloc {
-	//[selectedTitle release];
-	//[Title release];
-	//[selectedSubTitle release];
-	//[subTitle release];
-	//[selectedDescription release];
-	//[Description release];
     [selectedBody release];
 	[Image release];
 	[ScrollView release];
