@@ -14,9 +14,6 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    //image.frame = CGRectMake(10, 44, 300, 195);
-    //UIButton *button = [[UIButton alloc] initWithFrame:CGRectMake(50, 50, 50, 50)];
-    //[self.view addSubview:button];
 }
 
 -(IBAction)ButtonPressed:(id)sender    {
@@ -34,15 +31,6 @@
 - (void)mailComposeController:(MFMailComposeViewController*)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError*)error    {
     [self dismissModalViewControllerAnimated:YES];
 }
-
-/*- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
-        // Custom initialization
-    }
-    return self;
-}*/
 
 - (void)dealloc
 {
