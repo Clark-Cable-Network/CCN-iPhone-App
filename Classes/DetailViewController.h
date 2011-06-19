@@ -11,7 +11,6 @@
 @interface DetailViewController : UIViewController {
 	IBOutlet UILabel *Title;
 	IBOutlet UILabel *subTitle;
-	//IBOutlet UITextView *Description;
 	IBOutlet UIScrollView *ScrollView;
 	IBOutlet UIImageView *Image;
 	NSString *selectedTitle, *selectedSubTitle, *selectedImage, *navigationBar;
