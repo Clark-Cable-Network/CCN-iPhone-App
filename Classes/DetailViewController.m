@@ -82,6 +82,10 @@ int Height;   //Add to this for each new element.
         NextIdentifier = currentString;
     }
     
+    if ([[selectedBody objectAtIndex:([selectedBody count] - 2)] isEqualToString:@"V"]) {
+        Height += 15;
+    }
+    
     [ScrollView setContentSize:CGSizeMake(320, Height)];
 }
 

@@ -22,7 +22,7 @@
     
     [mail setSubject:@"I want to join CCN!"];
     [mail setToRecipients:[NSArray arrayWithObject:@"clarkcablenetwork@gmail.com"]];
-    [mail setMessageBody:@"I'd like to be put on the CCN email list." isHTML:NO];
+    [mail setMessageBody:@"I'd like to be put on the CCN email list!" isHTML:NO];
     
     [self presentModalViewController:mail animated:YES];
     [mail release];
