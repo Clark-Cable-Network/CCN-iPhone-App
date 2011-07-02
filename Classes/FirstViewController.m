@@ -6,27 +6,34 @@
 //  Copyright 2010 __MyCompanyName__. All rights reserved.
 //
 
-#import "NewsViewController.h"
+#import "FirstViewController.h"
 #import "CCNAppDelegate.h"
 #import "DetailViewController.h"
 #import "OverlayViewController.h"
+#import "Show.h"
 #import "Article.h"
-#import "XMLParserNews.h"
+#import "XMLParserVideo.h"
+#import "Reachability.h"
 #import "ImageDownload.h"
 
-@implementation NewsViewController
+@implementation FirstViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
 	
-	NewsItems = [[NSMutableArray alloc] init];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(checkNetworkStatus:) name:kReachabilityChangedNotification object:nil];
+
+	hostReachable = [[Reachability reachabilityWithHostName: @"www.clarku.edu"] retain];
+	[hostReachable startNotifier];
 	
-	[self loadNewsItems];
+	Shows = [[NSMutableArray alloc] init];
+	
+	[self loadShows];
 	
 	//Initialize the copy array.
-	copyNewsItems = [[NSMutableArray alloc] init];
+	copyShows = [[NSMutableArray alloc] init];
 	
-	self.navigationItem.title = @"News";
+	self.navigationItem.title = @"Videos";
 	
 	//Add the search bar
 	self.tableView.tableHeaderView = searchBar;
@@ -34,15 +41,14 @@
 	
 	searching = NO;
 	letUserSelectRow = YES;
-    //[self loadImagesForOnscreenRows];
 }
 
 - (void) viewDidAppear:(BOOL)animated  {
     [self loadImagesForOnscreenRows];
 }
 
--(void)loadNewsItems	{
-    NSURL *url = [[NSURL alloc] initWithString:@"http://www.zackhariton.com/App/News.xml"];
+-(void)loadShows	{
+	NSURL *url = [[NSURL alloc] initWithString:@"http://www.zackhariton.com/App/Videos.xml"];
 	UIApplication *app = [UIApplication sharedApplication];
 	app.networkActivityIndicatorVisible = YES;
 	NSXMLParser *xmlParser = [[NSXMLParser alloc] initWithContentsOfURL:url];
@@ -50,26 +56,27 @@
 	[url release];
 	
 	//Initialize the delegate.
-	XMLParserNews *parser = [[XMLParserNews alloc] initXMLParser];
+	XMLParserVideo *parser = [[XMLParserVideo alloc] initXMLParser];
 	
 	//Set delegate
 	[xmlParser setDelegate:parser];
 	
 	[xmlParser parse];
-	
-	for (Article *newsItemTemp in [parser getNewsItems])	{
-		[NewsItems addObject:[newsItemTemp deepCopy]];
+    
+	for (Show *showTemp in [parser getShows])	{
+		[Shows addObject:[showTemp deepCopy]];
 	}
 	
-	[xmlParser release];
+	//[xmlParser release];
 }
 
 #pragma mark Table view methods
 
 - (UITableViewCell *) getCellContentView:(NSString *)cellIdentifier {
-	CGRect CellFrame = CGRectMake(0, 0, 300, 70);
-	CGRect Label1Frame = CGRectMake(10, 2, 290, 20);
-	CGRect Label2Frame = CGRectMake(10, 24, 290, 15);
+	
+    CGRect CellFrame = CGRectMake(0, 0, 300, 70);
+	CGRect Label1Frame = CGRectMake(10, 2, 230, 20);
+	CGRect Label2Frame = CGRectMake(10, 24, 230, 15);
 	UILabel *lblTemp;
 	
 	UITableViewCell *cell = [[[UITableViewCell alloc] initWithFrame:CellFrame reuseIdentifier:cellIdentifier] autorelease];
@@ -99,6 +106,7 @@
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+	
 	static NSString *CellIdentifier = @"Cell";
 	
 	UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
@@ -110,21 +118,22 @@
 	
 	// Set up the cell...
 	if (searching)	{
-		lblTemp1.text = [[copyNewsItems objectAtIndex:indexPath.row] getName];
+		lblTemp1.text = [NSString stringWithFormat:@"%@%@%@",[[copyShows objectAtIndex:indexPath.row] getsubTitle], @": ",[[copyShows objectAtIndex:indexPath.row] getName]];
 		lblTemp2.frame = CGRectMake(10, 24, 290, 15);
 		lblTemp2.numberOfLines = 1;
 		[self tableView:tableView heightForRowAtIndexPath:indexPath];
-		lblTemp2.text = [[copyNewsItems objectAtIndex:indexPath.row] getDescription];
+		lblTemp2.text = [[copyShows objectAtIndex:indexPath.row] getDescription];
         [[cell viewWithTag:3] setHidden:YES];
 	}
 	else	{
-		NSString *Temp = [[NewsItems objectAtIndex:indexPath.row] getDescription];
-		lblTemp1.text = [[NewsItems objectAtIndex:indexPath.row] getName];
+		NSString *Temp = [[[[Shows objectAtIndex:indexPath.section] getEpisodes] objectAtIndex:indexPath.row] getDescription];
+		lblTemp1.text = [[[[Shows objectAtIndex:indexPath.section] getEpisodes] objectAtIndex:indexPath.row] getName];
         lblTemp2.numberOfLines = 3;
         lblTemp2.frame = CGRectMake(10, 24, 230, 45);
         cell.frame = CGRectMake(0, 0, 300, 70);
 		lblTemp2.text = Temp;
-        UIImageView *imageView = [[NewsItems objectAtIndex:indexPath.row] getImageView];
+        
+        UIImageView *imageView = [[[[Shows objectAtIndex:indexPath.section] getEpisodes] objectAtIndex:indexPath.row] getImageView];;
         imageView.tag = 3;
         [cell addSubview:imageView];
 	}
@@ -132,37 +141,43 @@
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {	
-	return 1;
+	if (searching)
+		return 1;
+	else
+		return [Shows count];
 }
 
 // Customize the number of rows in the table view.
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
 	if (searching)
-		return [copyNewsItems count];
+		return [copyShows count];
 	else
-		return [NewsItems count];
+		return [[[Shows objectAtIndex:section] getEpisodes] count];
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
-	return @"";
+	if (searching)
+		return @"";
+	else
+		return [[Shows objectAtIndex:section] getName];
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	//Get the selected episode
-	Article *selectedNewsItem = [[Article alloc] init];
+	Article *selectedEpisode = [[Article alloc] init];
 	
 	if (searching)
-		selectedNewsItem = [copyNewsItems objectAtIndex:indexPath.row];
+		selectedEpisode = [copyShows objectAtIndex:indexPath.row];
 	else
-		selectedNewsItem = [NewsItems objectAtIndex:indexPath.row];
+		selectedEpisode = [[[Shows objectAtIndex:indexPath.section] getEpisodes] objectAtIndex:indexPath.row];
 	//Initialize the detail view controller and display it.
 	
 	DetailViewController *dvController = [[DetailViewController alloc] initWithNibName:@"DetailView" bundle:[NSBundle mainBundle]];
-	dvController.selectedTitle = [selectedNewsItem getName];
-	dvController.selectedSubTitle = [selectedNewsItem getsubTitle];
-    dvController.selectedImage = [selectedNewsItem getImage];
-	dvController.navigationBar = @"Selected News";
-    dvController.selectedBody = [selectedNewsItem getBody];
+	dvController.selectedTitle = [selectedEpisode getsubTitle];
+	dvController.selectedSubTitle = [selectedEpisode getName];
+    dvController.selectedImage = [selectedEpisode getImage];
+    dvController.selectedBody = [selectedEpisode getBody];
+	dvController.navigationBar = @"Selected Episode";
 	[self.navigationController pushViewController:dvController animated:YES];
 	[dvController release];
 	dvController = nil;
@@ -217,7 +232,7 @@
 
 - (void)searchBar:(UISearchBar *)theSearchBar textDidChange:(NSString *)searchText {
 	//Remove all objects first.
-	[copyNewsItems removeAllObjects];
+	[copyShows removeAllObjects];
 	
 	if([searchText length] > 0) {
 		[ovController.view removeFromSuperview];
@@ -243,18 +258,37 @@
 
 - (void) searchTableView {
 	NSString *searchText = searchBar.text;
+	NSMutableArray *searchArray = [[NSMutableArray alloc] init];
+	NSMutableArray *array = [[NSMutableArray alloc] init];
+	
+	for (Show *currentShow in Shows)
+	{
+		array = [currentShow getEpisodes];
+		[searchArray addObjectsFromArray:array];
+	}
 	
 	int Count = 0;
-	for (Article *newsItemTemp in NewsItems)
+	for (Article *episodeTemp in searchArray)
 	{
-		NSString *sTemp = [newsItemTemp getName];
+		BOOL added = NO;
+		NSString *sTemp = [episodeTemp getName];
 		NSRange titleResultsRange = [sTemp rangeOfString:searchText options:NSCaseInsensitiveSearch];
 		
 		if (titleResultsRange.length > 0)	{
-			[copyNewsItems addObject:[NewsItems objectAtIndex:Count]];
+			[copyShows addObject:[searchArray objectAtIndex:Count]];
+			added = YES;
 		}
+		
+		sTemp = [episodeTemp getsubTitle];
+		titleResultsRange = [sTemp rangeOfString:searchText options:NSCaseInsensitiveSearch];
+		if (titleResultsRange.length > 0 && !added)
+			[copyShows addObject:[searchArray objectAtIndex:Count]];
+		
 		Count++;
 	}
+	
+	[searchArray release];
+	searchArray = nil;
 }
 
 - (void) doneSearching_Clicked:(id)sender {
@@ -292,9 +326,9 @@
     NSArray *visiblePaths = [self.tableView indexPathsForVisibleRows];
     for (int i = 0; i < [visiblePaths count]; i++)  {
         NSIndexPath *indexPath = [visiblePaths objectAtIndex:i];
-        UIImageView *imageView = [[NewsItems objectAtIndex:indexPath.row] getImageView];
+        UIImageView *imageView = [[[[Shows objectAtIndex:indexPath.section] getEpisodes] objectAtIndex:indexPath.row] getImageView];;
         if (imageView.image == nil && imageView.hidden == NO) {
-            [self downloadIcon:imageView withURL:[[NewsItems objectAtIndex:indexPath.row] getImage]];
+            [self downloadIcon:imageView withURL:[[[[Shows objectAtIndex:indexPath.section] getEpisodes] objectAtIndex:indexPath.row] getImage]];
         }
     }
 }
@@ -320,6 +354,20 @@
     [self loadImagesForOnscreenRows];
 }
 
+- (void) checkNetworkStatus:(NSNotification *)notice
+{
+	// called after network status changes
+	
+	NetworkStatus hostStatus = [hostReachable currentReachabilityStatus];
+	if (hostStatus == NotReachable) {
+		UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Connection Failed"
+														message:@"The connection to the server failed. Unable to download data"
+													   delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
+		[alert show];
+		[alert release];
+	}
+}
+
 - (void)didReceiveMemoryWarning {
 	// Releases the view if it doesn't have a superview.
     [super didReceiveMemoryWarning];
@@ -334,10 +382,11 @@
 
 
 -(void)dealloc	{
-	[NewsItems release];
+	[[NSNotificationCenter defaultCenter] removeObserver:self];
+	[Shows release];
 	[searchBar release];
 	[ovController release];
-	[copyNewsItems release];
+	[copyShows release];
 	[super dealloc];
 }
 
