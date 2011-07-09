@@ -9,6 +9,10 @@
 /* Begin PBXBuildFile section */
 		144FD32F12EB52C5001252B8 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 144FD32E12EB52C5001252B8 /* SystemConfiguration.framework */; };
 		144FD33212EB52F1001252B8 /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 144FD33012EB52F1001252B8 /* Reachability.m */; };
+		1460785913BEA317008EE9DD /* ScheduleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1460785813BEA317008EE9DD /* ScheduleViewController.m */; };
+		1460785E13BEA402008EE9DD /* Day.m in Sources */ = {isa = PBXBuildFile; fileRef = 1460785B13BEA402008EE9DD /* Day.m */; };
+		1460785F13BEA402008EE9DD /* Event.m in Sources */ = {isa = PBXBuildFile; fileRef = 1460785C13BEA402008EE9DD /* Event.m */; };
+		1460786113BEA87B008EE9DD /* ScheduleView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1460786013BEA87B008EE9DD /* ScheduleView.xib */; };
 		14862FC812E0119B003F1E51 /* XMLParserVideo.m in Sources */ = {isa = PBXBuildFile; fileRef = 14862FC712E0119B003F1E51 /* XMLParserVideo.m */; };
 		1486341E12E242DD003F1E51 /* Join Us!.png in Resources */ = {isa = PBXBuildFile; fileRef = 1486341D12E242DD003F1E51 /* Join Us!.png */; };
 		148634B312E25C16003F1E51 /* VideosIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 148634B212E25C16003F1E51 /* VideosIcon.png */; };
@@ -46,6 +50,13 @@
 		144FD32E12EB52C5001252B8 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		144FD33012EB52F1001252B8 /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Reachability.m; sourceTree = "<group>"; };
 		144FD33112EB52F1001252B8 /* Reachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Reachability.h; sourceTree = "<group>"; };
+		1460785713BEA317008EE9DD /* ScheduleViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScheduleViewController.h; sourceTree = "<group>"; };
+		1460785813BEA317008EE9DD /* ScheduleViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ScheduleViewController.m; sourceTree = "<group>"; };
+		1460785A13BEA402008EE9DD /* Day.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Day.h; sourceTree = "<group>"; };
+		1460785B13BEA402008EE9DD /* Day.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Day.m; sourceTree = "<group>"; };
+		1460785C13BEA402008EE9DD /* Event.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Event.m; sourceTree = "<group>"; };
+		1460785D13BEA402008EE9DD /* Event.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Event.h; sourceTree = "<group>"; };
+		1460786013BEA87B008EE9DD /* ScheduleView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ScheduleView.xib; sourceTree = "<group>"; };
 		14862FC612E0119B003F1E51 /* XMLParserVideo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XMLParserVideo.h; sourceTree = "<group>"; };
 		14862FC712E0119B003F1E51 /* XMLParserVideo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XMLParserVideo.m; sourceTree = "<group>"; };
 		1486341D12E242DD003F1E51 /* Join Us!.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Join Us!.png"; sourceTree = "<group>"; };
@@ -146,6 +157,8 @@
 				28216C960DB411BC00E5133A /* FirstViewController.m */,
 				1486364512E55563003F1E51 /* NewsViewController.h */,
 				1486364612E55563003F1E51 /* NewsViewController.m */,
+				1460785713BEA317008EE9DD /* ScheduleViewController.h */,
+				1460785813BEA317008EE9DD /* ScheduleViewController.m */,
 				14C9019A12BFF2AA005A287D /* DetailViewController.h */,
 				14C9019B12BFF2AA005A287D /* DetailViewController.m */,
 				14D93F4A1329608C00216738 /* JoinUsViewController.h */,
@@ -161,6 +174,10 @@
 				14C9030A12C0EB0C005A287D /* Show.m */,
 				1486351812E36D9E003F1E51 /* Article.h */,
 				1486351912E36D9E003F1E51 /* Article.m */,
+				1460785A13BEA402008EE9DD /* Day.h */,
+				1460785B13BEA402008EE9DD /* Day.m */,
+				1460785D13BEA402008EE9DD /* Event.h */,
+				1460785C13BEA402008EE9DD /* Event.m */,
 			);
 			name = Data;
 			sourceTree = "<group>";
@@ -218,6 +235,7 @@
 				282CCBFD0DB6C98000C4EA27 /* JoinUsView.xib */,
 				28AD73870D9D96C1002E5188 /* MainWindow.xib */,
 				1486364712E55563003F1E51 /* NewsView.xib */,
+				1460786013BEA87B008EE9DD /* ScheduleView.xib */,
 				8D1107310486CEB800E47090 /* CCN-Info.plist */,
 			);
 			name = Resources;
@@ -299,6 +317,7 @@
 				1486350C12E36C92003F1E51 /* StartUpImage.png in Resources */,
 				1486364912E55563003F1E51 /* NewsView.xib in Resources */,
 				148B6B63130046F10063D4ED /* Entitlements.plist in Resources */,
+				1460786113BEA87B008EE9DD /* ScheduleView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -323,6 +342,9 @@
 				14A66A81132421CE0079A69A /* ImageDownload.m in Sources */,
 				14D93F4C1329609000216738 /* JoinUsViewController.m in Sources */,
 				14CC8C2E13AE7ABC00024118 /* CCNDataModel.xcdatamodeld in Sources */,
+				1460785913BEA317008EE9DD /* ScheduleViewController.m in Sources */,
+				1460785E13BEA402008EE9DD /* Day.m in Sources */,
+				1460785F13BEA402008EE9DD /* Event.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

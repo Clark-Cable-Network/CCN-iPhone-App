@@ -7,7 +7,7 @@
 //
 
 #import "XMLParserNews.h"
-#import "VideosViewController.h"
+#import "FirstViewController.h"
 #import "Show.h"
 #import "Article.h"
 

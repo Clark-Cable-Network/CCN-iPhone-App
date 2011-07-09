@@ -1,0 +1,40 @@
+//
+//  Event.h
+//  CCN
+//
+//  Created by Zachary Hariton on 12/21/10.
+//  Copyright 2010 __MyCompanyName__. All rights reserved.
+//
+
+#import <Foundation/Foundation.h>
+
+@interface Event : NSObject {
+	NSString *Name, *startTime, *endTime, *Image;
+    NSMutableArray *Body;
+    UIImageView *imageView;
+}
+
+@property (nonatomic, retain) NSString *Name;
+@property (nonatomic, retain) NSString *startTime;
+@property (nonatomic, retain) NSString *endTime;
+@property (nonatomic, retain) NSString *Image;
+@property (nonatomic, retain) NSMutableArray *Body;
+@property (nonatomic, retain) UIImageView *imageView;
+
+- (void) setName:(NSString *)newName setStartTime:(NSString *)newStartTime setEndTime:(NSString *)newEndTime setImage:(NSString *)newImage setBody:(NSMutableArray *)newBody;
+- (void) setName:(NSString *)newName;
+- (void) setStartTime:(NSString *)newStartTime;
+- (void) setEndTime:(NSString *)newEndTime;
+- (void) setImage:(NSString *)newImage;
+- (void) setBody:(NSMutableArray *)newBody;
+- (void) setImageView:(UIImageView *)newImageView;
+- (NSString*)getName;
+- (NSString*)getStartTime;
+- (NSString*)getEndTime;
+- (NSString*)getImage;
+- (NSString*)getDescription;
+- (NSMutableArray*)getBody;
+- (UIImageView*)getImageView;
+- (Event*)deepCopy;
+
+@end
