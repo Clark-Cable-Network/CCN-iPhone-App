@@ -17,8 +17,8 @@
 @property (nonatomic, retain) NSString *Name;
 @property (nonatomic, retain) NSMutableArray *Events;
 
--(void)addEvent:(Event*)episode;
--(void)setEvents:(NSMutableArray *)newEpisodes;
+-(void)addEvent:(Event*)event;
+-(void)setEvents:(NSMutableArray *)newEvents;
 -(void)setName:(NSString *)newName;
 -(NSMutableArray*)getEvents;
 -(NSMutableArray*)getEventNames;

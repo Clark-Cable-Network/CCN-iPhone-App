@@ -10,7 +10,7 @@
 
 @implementation Event
 
-@synthesize Name, startTime, endTime, Image, Body, imageView;
+@synthesize Name, Day, startTime, endTime, Image, Body, imageView;
 
 - (id) init   {
     imageView = [[UIImageView alloc] initWithFrame:CGRectMake(240, 6, 58, 58)];
@@ -18,10 +18,13 @@
     return self;
 }
 
-- (void) setName:(NSString *)newName setStartTime:(NSString *)newStartTime setEndTime:(NSString *)newEndTime setImage:(NSString *)newImage setBody:(NSMutableArray *)newBody	{
+- (void) setName:(NSString *)newName setDay:(NSString *)newDay setStartTime:(NSString *)newStartTime setEndTime:(NSString *)newEndTime setMonth:(int)newMonth setYear:(int)newYear setImage:(NSString *)newImage setBody:(NSMutableArray *)newBody	{
 	Name = newName;
+    Day = newDay;
 	startTime = newStartTime;
     endTime = newEndTime;
+    Month = newMonth;
+    Year = newYear;
     Image = newImage;
     Body = newBody;
 }
@@ -33,36 +36,48 @@
 - (void) setName:(NSString *)newName    {
     Name = newName;
 }
+- (void) setDay:(NSString *)newDay  {
+    Day = newDay;
+}
 - (void) setStartTime:(NSString *)newStartTime    {
     startTime = newStartTime;
 }
 - (void) setEndTime:(NSString *)newEndTime    {
     endTime = newEndTime;
 }
+- (void) setMonth:(int)newMonth {
+    Month = newMonth;
+}
+- (void) setYear:(int)newYear   {
+    Year = newYear;
+}
 - (void) setImage:(NSString *)newImage  {
     Image = newImage;
 }
-
 - (void) setImageView:(UIImageView *)newImageView   {
     imageView = newImageView;
 }
-
 - (NSMutableArray*) getBody {
     return Body;
 }
-
 - (NSString*)getName	{
 	return Name;
 }
-
+- (NSString*)getDay {
+    return Day;
+}
 - (NSString*)getStartTime	{
 	return startTime;
 }
-
 - (NSString*)getEndTime	{
 	return endTime;
 }
-
+- (int)getMonth {
+    return Month;
+}
+- (int)getYear  {
+    return Year;
+}
 - (NSString*)getImage   {
     return Image;
 }
