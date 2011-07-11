@@ -69,7 +69,7 @@
 - (UITableViewCell *) getCellContentView:(NSString *)cellIdentifier {
 	CGRect CellFrame = CGRectMake(0, 0, 300, 70);
 	CGRect Label1Frame = CGRectMake(10, 2, 290, 20);
-	CGRect Label2Frame = CGRectMake(10, 24, 290, 15);
+	CGRect Label2Frame = CGRectMake(10, 22, 290, 15);
 	UILabel *lblTemp;
 	
 	UITableViewCell *cell = [[[UITableViewCell alloc] initWithFrame:CellFrame reuseIdentifier:cellIdentifier] autorelease];
@@ -121,7 +121,7 @@
 		NSString *Temp = [[NewsItems objectAtIndex:indexPath.row] getDescription];
 		lblTemp1.text = [[NewsItems objectAtIndex:indexPath.row] getName];
         lblTemp2.numberOfLines = 3;
-        lblTemp2.frame = CGRectMake(10, 24, 230, 45);
+        lblTemp2.frame = CGRectMake(10, 22, 243, 45);
         cell.frame = CGRectMake(0, 0, 300, 70);
 		lblTemp2.text = Temp;
         UIImageView *imageView = [[NewsItems objectAtIndex:indexPath.row] getImageView];

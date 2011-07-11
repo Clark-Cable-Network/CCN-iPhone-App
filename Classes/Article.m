@@ -13,7 +13,7 @@
 @synthesize Name, subTitle, Image, Body, imageView;
 
 - (id) init   {
-    imageView = [[UIImageView alloc] initWithFrame:CGRectMake(240, 6, 58, 58)];
+    imageView = [[UIImageView alloc] initWithFrame:CGRectMake(253, 6, 58, 58)];
     [imageView setBackgroundColor:[UIColor lightGrayColor]];
     return self;
 }

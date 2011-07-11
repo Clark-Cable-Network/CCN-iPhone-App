@@ -74,9 +74,10 @@
 
 - (UITableViewCell *) getCellContentView:(NSString *)cellIdentifier {
 	
-    CGRect CellFrame = CGRectMake(0, 0, 300, 70);
-	CGRect Label1Frame = CGRectMake(10, 2, 230, 20);
-	CGRect Label2Frame = CGRectMake(10, 24, 230, 15);
+    CGRect CellFrame = CGRectMake(0, 0, 300, 171);
+	CGRect Label1Frame = CGRectMake(10, 2, 181, 20);
+	CGRect Label2Frame = CGRectMake(10, 40, 181, 130);
+    CGRect Label3Frame = CGRectMake(10, 24, 181, 20);
 	UILabel *lblTemp;
 	
 	UITableViewCell *cell = [[[UITableViewCell alloc] initWithFrame:CellFrame reuseIdentifier:cellIdentifier] autorelease];
@@ -92,6 +93,14 @@
 	lblTemp = [[UILabel alloc] initWithFrame:Label2Frame];
 	lblTemp.tag = 2;
 	lblTemp.font = [UIFont systemFontOfSize:12];
+	[cell.contentView addSubview:lblTemp];
+	[lblTemp release];
+    
+    //Initialize Label with tag 4.
+    lblTemp = [[UILabel alloc] initWithFrame:Label3Frame];
+	lblTemp.tag = 4;
+	lblTemp.font = [UIFont systemFontOfSize:14];
+    lblTemp.textColor = [UIColor colorWithRed:122/255 green:228/255 blue:1 alpha:.85];
 	[cell.contentView addSubview:lblTemp];
 	[lblTemp release];
 	
@@ -115,6 +124,7 @@
 	
 	UILabel *lblTemp1 = (UILabel *)[cell viewWithTag:1];
 	UILabel *lblTemp2 = (UILabel *)[cell viewWithTag:2];
+    UILabel *lblTemp3 = (UILabel *)[cell viewWithTag:4];
 	
 	// Set up the cell...
 	if (searching)	{
@@ -124,14 +134,22 @@
 		[self tableView:tableView heightForRowAtIndexPath:indexPath];
 		lblTemp2.text = [[copyDays objectAtIndex:indexPath.row] getDescription];
         [[cell viewWithTag:3] setHidden:YES];
+        
+        lblTemp3.text = [[[[Days objectAtIndex:indexPath.section] getEvents] objectAtIndex:indexPath.row] getStartTime];
+        lblTemp3.frame = CGRectMake(10, 24, 181, 20);
 	}
 	else	{
 		NSString *Temp = [[[[Days objectAtIndex:indexPath.section] getEvents] objectAtIndex:indexPath.row] getDescription];
 		lblTemp1.text = [[[[Days objectAtIndex:indexPath.section] getEvents] objectAtIndex:indexPath.row] getName];
-        lblTemp2.numberOfLines = 3;
-        lblTemp2.frame = CGRectMake(10, 24, 230, 45);
-        cell.frame = CGRectMake(0, 0, 300, 70);
+        lblTemp2.numberOfLines = 8;
+        CGSize lblTemp2Size = [Temp sizeWithFont:lblTemp2.font constrainedToSize:CGSizeMake(181, 130)];
+        lblTemp2.frame = CGRectMake(10, 40, 181, lblTemp2Size.height);
+        cell.frame = CGRectMake(0, 0, 300, 171);
 		lblTemp2.text = Temp;
+        
+        lblTemp3.text = [[[[[[Days objectAtIndex:indexPath.section] getEvents] objectAtIndex:indexPath.row] getStartTime] stringByAppendingString:@" - "] stringByAppendingString:[[[[Days objectAtIndex:indexPath.section] getEvents] objectAtIndex:indexPath.row] getEndTime]];
+        lblTemp3.frame = CGRectMake(10, 22, 181, 20);
+        
         
         UIImageView *imageView = [[[[Days objectAtIndex:indexPath.section] getEvents] objectAtIndex:indexPath.row] getImageView];;
         imageView.tag = 3;

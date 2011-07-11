@@ -13,7 +13,7 @@
 @synthesize Name, Day, startTime, endTime, Image, Body, imageView;
 
 - (id) init   {
-    imageView = [[UIImageView alloc] initWithFrame:CGRectMake(240, 6, 58, 58)];
+    imageView = [[UIImageView alloc] initWithFrame:CGRectMake(204, 6, 107, 159)];
     [imageView setBackgroundColor:[UIColor lightGrayColor]];
     return self;
 }
