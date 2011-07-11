@@ -7,23 +7,25 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "ImageDownload.h"
 
+@class Reachability;
 @class OverlayViewController;
 
-@interface ScheduleViewController : UITableViewController <ImageDownloadDelegate> {
-	NSMutableArray *NewsItems;
-	NSMutableArray *copyNewsItems;
+@interface ScheduleViewController : UITableViewController {
+	NSMutableArray *Days;
+	NSMutableArray *copyDays;
 	IBOutlet UISearchBar *searchBar;
 	BOOL searching;
 	BOOL letUserSelectRow;
 	
 	OverlayViewController *ovController;
+    Reachability* hostReachable;
 }
 
 - (UITableViewCell *) getCellContentView:(NSString *)cellIdentifier;
-- (void) loadNewsItems;
+- (void) loadShows;
 - (void) searchTableView;
 - (void) doneSearching_Clicked:(id)sender;
+- (void) checkNetworkStatus:(NSNotification *)notice;
 
 @end

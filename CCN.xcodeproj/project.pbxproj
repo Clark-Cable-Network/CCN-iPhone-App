@@ -26,6 +26,7 @@
 		148B6B63130046F10063D4ED /* Entitlements.plist in Resources */ = {isa = PBXBuildFile; fileRef = 148B6B62130046F10063D4ED /* Entitlements.plist */; };
 		148C3D7B12C7A05500C08914 /* OverlayViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 148C3D7912C7A05500C08914 /* OverlayViewController.m */; };
 		148C3D7C12C7A05500C08914 /* OverlayView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 148C3D7A12C7A05500C08914 /* OverlayView.xib */; };
+		1490771513C9EC4400614EDB /* XMLParserSchedule.m in Sources */ = {isa = PBXBuildFile; fileRef = 1490771313C9EC4400614EDB /* XMLParserSchedule.m */; };
 		14A66A81132421CE0079A69A /* ImageDownload.m in Sources */ = {isa = PBXBuildFile; fileRef = 14A66A7F132421CE0079A69A /* ImageDownload.m */; };
 		14BD011F12DE5B7700673AE1 /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 14BD011E12DE5B7700673AE1 /* Icon.png */; };
 		14C9018F12BFF20D005A287D /* DetailView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 14C9018E12BFF20D005A287D /* DetailView.xib */; };
@@ -75,6 +76,8 @@
 		148C3D7812C7A05500C08914 /* OverlayViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OverlayViewController.h; sourceTree = "<group>"; };
 		148C3D7912C7A05500C08914 /* OverlayViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OverlayViewController.m; sourceTree = "<group>"; };
 		148C3D7A12C7A05500C08914 /* OverlayView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = OverlayView.xib; path = Classes/OverlayView.xib; sourceTree = "<group>"; };
+		1490771313C9EC4400614EDB /* XMLParserSchedule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XMLParserSchedule.m; sourceTree = "<group>"; };
+		1490771413C9EC4400614EDB /* XMLParserSchedule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XMLParserSchedule.h; sourceTree = "<group>"; };
 		14A66A7F132421CE0079A69A /* ImageDownload.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageDownload.m; sourceTree = "<group>"; };
 		14A66A80132421CE0079A69A /* ImageDownload.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageDownload.h; sourceTree = "<group>"; };
 		14BD011E12DE5B7700673AE1 /* Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon.png; sourceTree = "<group>"; };
@@ -140,6 +143,8 @@
 				148635F912E53F7C003F1E51 /* XMLParserNews.m */,
 				14862FC612E0119B003F1E51 /* XMLParserVideo.h */,
 				14862FC712E0119B003F1E51 /* XMLParserVideo.m */,
+				1490771413C9EC4400614EDB /* XMLParserSchedule.h */,
+				1490771313C9EC4400614EDB /* XMLParserSchedule.m */,
 				148C3D7812C7A05500C08914 /* OverlayViewController.h */,
 				148C3D7912C7A05500C08914 /* OverlayViewController.m */,
 				144FD33112EB52F1001252B8 /* Reachability.h */,
@@ -345,6 +350,7 @@
 				1460785913BEA317008EE9DD /* ScheduleViewController.m in Sources */,
 				1460785E13BEA402008EE9DD /* Day.m in Sources */,
 				1460785F13BEA402008EE9DD /* Event.m in Sources */,
+				1490771513C9EC4400614EDB /* XMLParserSchedule.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

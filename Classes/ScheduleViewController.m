@@ -10,8 +10,10 @@
 #import "CCNAppDelegate.h"
 #import "DetailViewController.h"
 #import "OverlayViewController.h"
-#import "Article.h"
-#import "XMLParserNews.h"
+#import "Day.h"
+#import "Event.h"
+#import "XMLParserSchedule.h"
+#import "Reachability.h"
 #import "ImageDownload.h"
 
 @implementation ScheduleViewController
@@ -19,12 +21,17 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 	
-	NewsItems = [[NSMutableArray alloc] init];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(checkNetworkStatus:) name:kReachabilityChangedNotification object:nil];
+    
+	hostReachable = [[Reachability reachabilityWithHostName: @"www.clarku.edu"] retain];
+	[hostReachable startNotifier];
 	
-	[self loadNewsItems];
+	Days = [[NSMutableArray alloc] init];
+	
+	[self loadShows];
 	
 	//Initialize the copy array.
-	copyNewsItems = [[NSMutableArray alloc] init];
+	copyDays = [[NSMutableArray alloc] init];
 	
 	self.navigationItem.title = @"Schedule";
 	
@@ -34,15 +41,14 @@
 	
 	searching = NO;
 	letUserSelectRow = YES;
-    //[self loadImagesForOnscreenRows];
 }
 
 - (void) viewDidAppear:(BOOL)animated  {
     [self loadImagesForOnscreenRows];
 }
 
--(void)loadNewsItems	{
-    NSURL *url = [[NSURL alloc] initWithString:@"http://www.zackhariton.com/App/News.xml"];
+-(void)loadShows	{
+	NSURL *url = [[NSURL alloc] initWithString:@"http://www.zackhariton.com/App/Schedule.xml"];
 	UIApplication *app = [UIApplication sharedApplication];
 	app.networkActivityIndicatorVisible = YES;
 	NSXMLParser *xmlParser = [[NSXMLParser alloc] initWithContentsOfURL:url];
@@ -50,26 +56,27 @@
 	[url release];
 	
 	//Initialize the delegate.
-	XMLParserNews *parser = [[XMLParserNews alloc] initXMLParser];
+	XMLParserSchedule *parser = [[XMLParserSchedule alloc] initXMLParser];
 	
 	//Set delegate
 	[xmlParser setDelegate:parser];
 	
 	[xmlParser parse];
-	
-	for (Article *newsItemTemp in [parser getNewsItems])	{
-		[NewsItems addObject:[newsItemTemp deepCopy]];
+    
+	for (Day *dayTemp in [parser getDays])	{
+		[Days addObject:[dayTemp deepCopy]];
 	}
 	
-	[xmlParser release];
+	//[xmlParser release];
 }
 
 #pragma mark Table view methods
 
 - (UITableViewCell *) getCellContentView:(NSString *)cellIdentifier {
-	CGRect CellFrame = CGRectMake(0, 0, 300, 70);
-	CGRect Label1Frame = CGRectMake(10, 2, 290, 20);
-	CGRect Label2Frame = CGRectMake(10, 24, 290, 15);
+	
+    CGRect CellFrame = CGRectMake(0, 0, 300, 70);
+	CGRect Label1Frame = CGRectMake(10, 2, 230, 20);
+	CGRect Label2Frame = CGRectMake(10, 24, 230, 15);
 	UILabel *lblTemp;
 	
 	UITableViewCell *cell = [[[UITableViewCell alloc] initWithFrame:CellFrame reuseIdentifier:cellIdentifier] autorelease];
@@ -99,6 +106,7 @@
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+	
 	static NSString *CellIdentifier = @"Cell";
 	
 	UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
@@ -110,21 +118,22 @@
 	
 	// Set up the cell...
 	if (searching)	{
-		lblTemp1.text = [[copyNewsItems objectAtIndex:indexPath.row] getName];
+		lblTemp1.text = [NSString stringWithFormat:@"%@%@%@",[[copyDays objectAtIndex:indexPath.row] getDay], @": ",[[copyDays objectAtIndex:indexPath.row] getName]];
 		lblTemp2.frame = CGRectMake(10, 24, 290, 15);
 		lblTemp2.numberOfLines = 1;
 		[self tableView:tableView heightForRowAtIndexPath:indexPath];
-		lblTemp2.text = [[copyNewsItems objectAtIndex:indexPath.row] getDescription];
+		lblTemp2.text = [[copyDays objectAtIndex:indexPath.row] getDescription];
         [[cell viewWithTag:3] setHidden:YES];
 	}
 	else	{
-		NSString *Temp = [[NewsItems objectAtIndex:indexPath.row] getDescription];
-		lblTemp1.text = [[NewsItems objectAtIndex:indexPath.row] getName];
+		NSString *Temp = [[[[Days objectAtIndex:indexPath.section] getEvents] objectAtIndex:indexPath.row] getDescription];
+		lblTemp1.text = [[[[Days objectAtIndex:indexPath.section] getEvents] objectAtIndex:indexPath.row] getName];
         lblTemp2.numberOfLines = 3;
         lblTemp2.frame = CGRectMake(10, 24, 230, 45);
         cell.frame = CGRectMake(0, 0, 300, 70);
 		lblTemp2.text = Temp;
-        UIImageView *imageView = [[NewsItems objectAtIndex:indexPath.row] getImageView];
+        
+        UIImageView *imageView = [[[[Days objectAtIndex:indexPath.section] getEvents] objectAtIndex:indexPath.row] getImageView];;
         imageView.tag = 3;
         [cell addSubview:imageView];
 	}
@@ -132,37 +141,43 @@
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {	
-	return 1;
+	if (searching)
+		return 1;
+	else
+		return [Days count];
 }
 
 // Customize the number of rows in the table view.
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
 	if (searching)
-		return [copyNewsItems count];
+		return [copyDays count];
 	else
-		return [NewsItems count];
+		return [[[Days objectAtIndex:section] getEvents] count];
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
-	return @"";
+	if (searching)
+		return @"";
+	else
+		return [[Days objectAtIndex:section] getName];
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	//Get the selected episode
-	Article *selectedNewsItem = [[Article alloc] init];
+	Event *selectedEvent = [[Event alloc] init];
 	
 	if (searching)
-		selectedNewsItem = [copyNewsItems objectAtIndex:indexPath.row];
+		selectedEvent = [copyDays objectAtIndex:indexPath.row];
 	else
-		selectedNewsItem = [NewsItems objectAtIndex:indexPath.row];
+		selectedEvent = [[[Days objectAtIndex:indexPath.section] getEvents] objectAtIndex:indexPath.row];
 	//Initialize the detail view controller and display it.
 	
 	DetailViewController *dvController = [[DetailViewController alloc] initWithNibName:@"DetailView" bundle:[NSBundle mainBundle]];
-	dvController.selectedTitle = [selectedNewsItem getName];
-	dvController.selectedSubTitle = [selectedNewsItem getsubTitle];
-    dvController.selectedImage = [selectedNewsItem getImage];
-	dvController.navigationBar = @"Selected News";
-    dvController.selectedBody = [selectedNewsItem getBody];
+	dvController.selectedTitle = [selectedEvent getDay];
+	dvController.selectedSubTitle = [selectedEvent getName];
+    dvController.selectedImage = [selectedEvent getImage];
+    dvController.selectedBody = [selectedEvent getBody];
+	dvController.navigationBar = @"Selected Episode";
 	[self.navigationController pushViewController:dvController animated:YES];
 	[dvController release];
 	dvController = nil;
@@ -176,8 +191,8 @@
 }
 
 /*- (UITableViewCellAccessoryType)tableView:(UITableView *)tableView accessoryTypeForRowWithIndexPath:(NSIndexPath *)indexPath {
-	return UITableViewCellAccessoryDisclosureIndicator;
-}*/
+ return UITableViewCellAccessoryDisclosureIndicator;
+ }*/
 
 - (void)tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath {
 	[self tableView:tableView didSelectRowAtIndexPath:indexPath];
@@ -217,7 +232,7 @@
 
 - (void)searchBar:(UISearchBar *)theSearchBar textDidChange:(NSString *)searchText {
 	//Remove all objects first.
-	[copyNewsItems removeAllObjects];
+	[copyDays removeAllObjects];
 	
 	if([searchText length] > 0) {
 		[ovController.view removeFromSuperview];
@@ -243,18 +258,37 @@
 
 - (void) searchTableView {
 	NSString *searchText = searchBar.text;
+	NSMutableArray *searchArray = [[NSMutableArray alloc] init];
+	NSMutableArray *array = [[NSMutableArray alloc] init];
+	
+	for (Day *currentDay in Days)
+	{
+		array = [currentDay getEvents];
+		[searchArray addObjectsFromArray:array];
+	}
 	
 	int Count = 0;
-	for (Article *newsItemTemp in NewsItems)
+	for (Event *eventTemp in searchArray)
 	{
-		NSString *sTemp = [newsItemTemp getName];
+		BOOL added = NO;
+		NSString *sTemp = [eventTemp getName];
 		NSRange titleResultsRange = [sTemp rangeOfString:searchText options:NSCaseInsensitiveSearch];
 		
 		if (titleResultsRange.length > 0)	{
-			[copyNewsItems addObject:[NewsItems objectAtIndex:Count]];
+			[copyDays addObject:[searchArray objectAtIndex:Count]];
+			added = YES;
 		}
+		
+		sTemp = [eventTemp getDay];
+		titleResultsRange = [sTemp rangeOfString:searchText options:NSCaseInsensitiveSearch];
+		if (titleResultsRange.length > 0 && !added)
+			[copyDays addObject:[searchArray objectAtIndex:Count]];
+		
 		Count++;
 	}
+	
+	[searchArray release];
+	searchArray = nil;
 }
 
 - (void) doneSearching_Clicked:(id)sender {
@@ -292,9 +326,9 @@
     NSArray *visiblePaths = [self.tableView indexPathsForVisibleRows];
     for (int i = 0; i < [visiblePaths count]; i++)  {
         NSIndexPath *indexPath = [visiblePaths objectAtIndex:i];
-        UIImageView *imageView = [[NewsItems objectAtIndex:indexPath.row] getImageView];
+        UIImageView *imageView = [[[[Days objectAtIndex:indexPath.section] getEvents] objectAtIndex:indexPath.row] getImageView];;
         if (imageView.image == nil && imageView.hidden == NO) {
-            [self downloadIcon:imageView withURL:[[NewsItems objectAtIndex:indexPath.row] getImage]];
+            [self downloadIcon:imageView withURL:[[[[Days objectAtIndex:indexPath.section] getEvents] objectAtIndex:indexPath.row] getImage]];
         }
     }
 }
@@ -320,6 +354,20 @@
     [self loadImagesForOnscreenRows];
 }
 
+- (void) checkNetworkStatus:(NSNotification *)notice
+{
+	// called after network status changes
+	
+	NetworkStatus hostStatus = [hostReachable currentReachabilityStatus];
+	if (hostStatus == NotReachable) {
+		UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Connection Failed"
+														message:@"The connection to the server failed. Unable to download data"
+													   delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
+		[alert show];
+		[alert release];
+	}
+}
+
 - (void)didReceiveMemoryWarning {
 	// Releases the view if it doesn't have a superview.
     [super didReceiveMemoryWarning];
@@ -334,10 +382,11 @@
 
 
 -(void)dealloc	{
-	[NewsItems release];
+	[[NSNotificationCenter defaultCenter] removeObserver:self];
+	[Days release];
 	[searchBar release];
 	[ovController release];
-	[copyNewsItems release];
+	[copyDays release];
 	[super dealloc];
 }
 

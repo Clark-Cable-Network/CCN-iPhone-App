@@ -29,7 +29,7 @@
 - (void)parser:(NSXMLParser *)parser didStartElement:(NSString *)elementName
   namespaceURI:(NSString *)namespaceURI qualifiedName:(NSString *)qualifiedName
 	attributes:(NSDictionary *)attributeDict {
-	if ([elementName isEqualToString:@"Article"])
+	if ([elementName isEqualToString:@"Event"])
         useThisElement = YES;
 	else
 		useThisElement = NO;
@@ -80,7 +80,7 @@ namespaceURI:(NSString *)namespaceURI qualifiedName:(NSString *)qName {
 		if (currentElementShowLocation == -1)	{
 			Day *dayTemp = [[Day alloc] init];
 			NSMutableArray *eventsTemp = [[NSMutableArray alloc] init];
-			[eventsTemp addObject:dayTemp];
+			[eventsTemp addObject:eventTemp];
             [dayTemp setEvents:eventsTemp];
 			[dayTemp setName:[eventTemp getDay]];
 			[Days addObject:dayTemp];
