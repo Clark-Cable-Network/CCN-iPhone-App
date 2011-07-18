@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "Day.h"
 
 @class Reachability;
 @class OverlayViewController;
@@ -19,6 +20,7 @@
 	BOOL letUserSelectRow;
     UIScrollView *daySelector;
     int selectedButton;
+    Day *currentDay;
 	
 	OverlayViewController *ovController;
     Reachability* hostReachable;

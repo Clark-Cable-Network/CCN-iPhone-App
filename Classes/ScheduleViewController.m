@@ -38,6 +38,7 @@
 	searching = NO;
 	letUserSelectRow = YES;
     selectedButton = 1; //Remove after implementing current time code.
+    currentDay = [Days objectAtIndex:0];
 }
 
 - (void) viewDidAppear:(BOOL)animated  {
@@ -85,6 +86,16 @@
 	//[xmlParser release];
 }
 
+- (void) updateCurrentDayWithDay:(NSString *)newDay    {
+    for (Day *dayTemp in Days)	{
+        if ([[dayTemp getName] isEqualToString:newDay]) {
+            currentDay = dayTemp;
+            //break;
+        }
+    }
+    [self.tableView reloadData];
+}
+
 - (void) daySelected:(id) sender    {
     [self.tableView setContentOffset:CGPointMake(0, 0) animated:YES];
     UIButton *tempButton = (UIButton*) [daySelector viewWithTag:selectedButton];
@@ -100,6 +111,8 @@
         offset = daySelector.contentSize.width - 320;
     }
     [daySelector setContentOffset:CGPointMake(offset, 0) animated:YES];
+    currentDay = [Days objectAtIndex:tempButton.tag-1];
+    [self.tableView reloadData];
 }
 
 #pragma mark Table view methods
@@ -167,34 +180,35 @@
 		lblTemp2.text = [[copyDays objectAtIndex:indexPath.row] getDescription];
         [[cell viewWithTag:3] setHidden:YES];
         
-        lblTemp3.text = [[[[Days objectAtIndex:indexPath.section] getEvents] objectAtIndex:indexPath.row] getStartTime];
+        lblTemp3.text = [[[currentDay getEvents] objectAtIndex:indexPath.row] getStartTime];
         lblTemp3.frame = CGRectMake(10, 24, 181, 20);
 	}
 	else	{
-		NSString *Temp = [[[[Days objectAtIndex:indexPath.section] getEvents] objectAtIndex:indexPath.row] getDescription];
-		lblTemp1.text = [[[[Days objectAtIndex:indexPath.section] getEvents] objectAtIndex:indexPath.row] getName];
+		NSString *Temp = [[[currentDay getEvents] objectAtIndex:indexPath.row] getDescription];
+		lblTemp1.text = [[[currentDay getEvents] objectAtIndex:indexPath.row] getName];
         lblTemp2.numberOfLines = 8;
         CGSize lblTemp2Size = [Temp sizeWithFont:lblTemp2.font constrainedToSize:CGSizeMake(181, 130)];
         lblTemp2.frame = CGRectMake(10, 40, 181, lblTemp2Size.height);
         cell.frame = CGRectMake(0, 0, 300, 171);
 		lblTemp2.text = Temp;
         
-        lblTemp3.text = [[[[[[Days objectAtIndex:indexPath.section] getEvents] objectAtIndex:indexPath.row] getStartTime] stringByAppendingString:@" - "] stringByAppendingString:[[[[Days objectAtIndex:indexPath.section] getEvents] objectAtIndex:indexPath.row] getEndTime]];
+        lblTemp3.text = [[[[[currentDay getEvents] objectAtIndex:indexPath.row] getStartTime] stringByAppendingString:@" - "] stringByAppendingString:[[[currentDay getEvents] objectAtIndex:indexPath.row] getEndTime]];
         lblTemp3.frame = CGRectMake(10, 22, 181, 20);
         
         
-        UIImageView *imageView = [[[[Days objectAtIndex:indexPath.section] getEvents] objectAtIndex:indexPath.row] getImageView];;
+        UIImageView *imageView = [[[currentDay getEvents] objectAtIndex:indexPath.row] getImageView];;
         imageView.tag = 3;
         [cell addSubview:imageView];
 	}
 	return cell;
 }
 
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {	
-	if (searching)
-		return 1;
-	else
-		return [Days count];
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+    return 1;
+//	if (searching)
+//		return 1;
+//	else
+//		return [Days count];
 }
 
 // Customize the number of rows in the table view.
@@ -202,14 +216,16 @@
 	if (searching)
 		return [copyDays count];
 	else
-		return [[[Days objectAtIndex:section] getEvents] count];
+        return [[currentDay getEvents] count];y
+//		return [[[Days objectAtIndex:section] getEvents] count];
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
-	if (searching)
-		return @"";
-	else
-		return [[Days objectAtIndex:section] getName];
+    return @"";
+//	if (searching)
+//		return @"";
+//	else
+//		return [[Days objectAtIndex:section] getName];
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -219,7 +235,7 @@
 	if (searching)
 		selectedEvent = [copyDays objectAtIndex:indexPath.row];
 	else
-		selectedEvent = [[[Days objectAtIndex:indexPath.section] getEvents] objectAtIndex:indexPath.row];
+		selectedEvent = [[currentDay getEvents] objectAtIndex:indexPath.row];
 	//Initialize the detail view controller and display it.
 	
 	DetailViewController *dvController = [[DetailViewController alloc] initWithNibName:@"DetailView" bundle:[NSBundle mainBundle]];
@@ -376,9 +392,9 @@
     NSArray *visiblePaths = [self.tableView indexPathsForVisibleRows];
     for (int i = 0; i < [visiblePaths count]; i++)  {
         NSIndexPath *indexPath = [visiblePaths objectAtIndex:i];
-        UIImageView *imageView = [[[[Days objectAtIndex:indexPath.section] getEvents] objectAtIndex:indexPath.row] getImageView];;
+        UIImageView *imageView = [[[currentDay getEvents] objectAtIndex:indexPath.row] getImageView];;
         if (imageView.image == nil && imageView.hidden == NO) {
-            [self downloadIcon:imageView withURL:[[[[Days objectAtIndex:indexPath.section] getEvents] objectAtIndex:indexPath.row] getImage]];
+            [self downloadIcon:imageView withURL:[[[currentDay getEvents] objectAtIndex:indexPath.row] getImage]];
         }
     }
 }
