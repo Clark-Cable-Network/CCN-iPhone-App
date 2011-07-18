@@ -216,7 +216,7 @@
 	if (searching)
 		return [copyDays count];
 	else
-        return [[currentDay getEvents] count];y
+        return [[currentDay getEvents] count];
 //		return [[[Days objectAtIndex:section] getEvents] count];
 }
 
