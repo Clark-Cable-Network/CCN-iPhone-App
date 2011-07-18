@@ -71,9 +71,9 @@
         tempButton.tag = Count + 1;
         [tempButton addTarget:self action:@selector(daySelected:) forControlEvents:UIControlEventTouchUpInside];
         [daySelector addSubview:tempButton];
-        [daySelector setContentSize:CGSizeMake(Count*70+75, 40)];
         Count++;
 	}
+    [daySelector setContentSize:CGSizeMake(Count*70+5, 40)];
     
     //Add the search bar and daySelector
     UIView *tableHeader = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 84)];
@@ -92,6 +92,7 @@
     tempButton = (UIButton*) sender;
     selectedButton = tempButton.tag;
     [tempButton setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
+    
     int offset = (tempButton.tag*70)-140;
     if (offset < 0) {
         offset = 0;
