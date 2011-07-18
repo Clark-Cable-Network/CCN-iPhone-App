@@ -205,10 +205,6 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     return 1;
-//	if (searching)
-//		return 1;
-//	else
-//		return [Days count];
 }
 
 // Customize the number of rows in the table view.
@@ -217,15 +213,10 @@
 		return [copyDays count];
 	else
         return [[currentDay getEvents] count];
-//		return [[[Days objectAtIndex:section] getEvents] count];
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
     return @"";
-//	if (searching)
-//		return @"";
-//	else
-//		return [[Days objectAtIndex:section] getName];
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
