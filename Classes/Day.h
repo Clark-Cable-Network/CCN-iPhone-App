@@ -11,7 +11,7 @@
 
 @interface Day : NSObject {
 	NSString *Name;	//Name of Day
-	NSMutableArray *Episodes;	//Array of Episodes
+	NSMutableArray *Events;	//Array of Episodes
 }
 
 @property (nonatomic, retain) NSString *Name;
