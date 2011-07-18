@@ -17,6 +17,8 @@
 	IBOutlet UISearchBar *searchBar;
 	BOOL searching;
 	BOOL letUserSelectRow;
+    UIScrollView *daySelector;
+    int selectedButton;
 	
 	OverlayViewController *ovController;
     Reachability* hostReachable;

@@ -34,13 +34,10 @@
 	copyDays = [[NSMutableArray alloc] init];
 	
 	self.navigationItem.title = @"Schedule";
-	
-	//Add the search bar
-	self.tableView.tableHeaderView = searchBar;
-	searchBar.autocorrectionType = UITextAutocorrectionTypeNo;
-	
+    
 	searching = NO;
 	letUserSelectRow = YES;
+    selectedButton = 1; //Remove after implementing current time code.
 }
 
 - (void) viewDidAppear:(BOOL)animated  {
@@ -63,11 +60,45 @@
 	
 	[xmlParser parse];
     
+    daySelector = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 44, 320, 40)];
+    int Count = 0;
 	for (Day *dayTemp in [parser getDays])	{
 		[Days addObject:[dayTemp deepCopy]];
+        UIButton *tempButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+        tempButton.frame = CGRectMake(Count*70+5, 3, 65, 32);
+        [tempButton setTitle:[dayTemp getName] forState:UIControlStateNormal];
+        [tempButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+        tempButton.tag = Count + 1;
+        [tempButton addTarget:self action:@selector(daySelected:) forControlEvents:UIControlEventTouchUpInside];
+        [daySelector addSubview:tempButton];
+        [daySelector setContentSize:CGSizeMake(Count*70+75, 40)];
+        Count++;
 	}
+    
+    //Add the search bar and daySelector
+    UIView *tableHeader = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 84)];
+    [tableHeader addSubview:searchBar];
+    [tableHeader addSubview:daySelector];
+	self.tableView.tableHeaderView = tableHeader;
+	searchBar.autocorrectionType = UITextAutocorrectionTypeNo;
 	
 	//[xmlParser release];
+}
+
+- (void) daySelected:(id) sender    {
+    [self.tableView setContentOffset:CGPointMake(0, 0) animated:YES];
+    UIButton *tempButton = (UIButton*) [daySelector viewWithTag:selectedButton];
+    [tempButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+    tempButton = (UIButton*) sender;
+    selectedButton = tempButton.tag;
+    [tempButton setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
+    int offset = (tempButton.tag*70)-140;
+    if (offset < 0) {
+        offset = 0;
+    } else if (offset + 320 > daySelector.contentSize.width)    {
+        offset = daySelector.contentSize.width - 320;
+    }
+    [daySelector setContentOffset:CGPointMake(offset, 0) animated:YES];
 }
 
 #pragma mark Table view methods
