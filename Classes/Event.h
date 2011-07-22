@@ -36,7 +36,11 @@
 - (NSString*)getName;
 - (NSString*)getDay;
 - (NSString*)getStartTime;
+- (int)getStartHour;
+- (int)getStartMinute;
 - (NSString*)getEndTime;
+- (int)getEndHour;
+- (int)getEndMinute;
 - (int)getMonth;
 - (int)getYear;
 - (NSString*)getImage;

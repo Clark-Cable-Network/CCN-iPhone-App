@@ -49,8 +49,8 @@
     selectedButton = dayOfTheWeek; //Remove after implementing current time code.
     [self daySelected:[daySelector viewWithTag:dayOfTheWeek]];
     
-    NSLog(@"The Hour is %d",[components hour]);
-    NSLog(@"The Minute is %d",[components minute]);
+    int tableViewHeightSet = [currentDay indexOfEventAfterHour:[components hour] andMinute:[components minute]]*171 + 84;
+    [self.tableView setContentOffset:CGPointMake(0, tableViewHeightSet) animated:YES];
 }
 
 - (void) viewDidAppear:(BOOL)animated  {

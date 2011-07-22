@@ -23,6 +23,8 @@
 -(NSMutableArray*)getEvents;
 -(NSMutableArray*)getEventNames;
 -(NSString*)getName;
+-(Event*)eventAfterHour:(int)hour andMinute:(int)minute;
+-(int)indexOfEventAfterHour:(int)hour andMinute:(int)minute;
 -(Day*)deepCopy;
 
 @end

@@ -69,8 +69,38 @@
 - (NSString*)getStartTime	{
 	return startTime;
 }
+- (int)getStartHour {
+    if ([[[startTime componentsSeparatedByString:@" "] objectAtIndex:1] isEqualToString:@"AM"]) {
+        int startHour = [[[startTime componentsSeparatedByString:@":"] objectAtIndex:0] intValue];
+        if (startHour == 12)
+            return 0;
+        else
+            return startHour;
+    }
+    else    {
+        return [[[startTime componentsSeparatedByString:@":"] objectAtIndex:0] intValue]+12;
+    }
+}
+- (int)getStartMinute   {
+    return [[[[[startTime componentsSeparatedByString:@":"] objectAtIndex:1] componentsSeparatedByString:@" "] objectAtIndex:0] intValue];
+}
 - (NSString*)getEndTime	{
 	return endTime;
+}
+- (int)getEndHour   {
+    if ([[[endTime componentsSeparatedByString:@" "] objectAtIndex:1] isEqualToString:@"AM"]) {
+        int endHour = [[[endTime componentsSeparatedByString:@":"] objectAtIndex:0] intValue];
+        if (endHour == 12)
+            return 0;
+        else
+            return endHour;
+    }
+    else    {
+        return [[[endTime componentsSeparatedByString:@":"] objectAtIndex:0] intValue]+12;
+    }
+}
+- (int)getEndMinute {
+    return [[[[[endTime componentsSeparatedByString:@":"] objectAtIndex:1] componentsSeparatedByString:@" "] objectAtIndex:0] intValue];
 }
 - (int)getMonth {
     return Month;

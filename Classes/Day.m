@@ -56,6 +56,28 @@
 	return copy;
 }
 
+-(Event*)eventAfterHour:(int)hour andMinute:(int)minute {
+    for (Event *tempEvent in Events) {
+        int tempEventStartHour = [tempEvent getStartHour];
+        if (tempEventStartHour > hour || (tempEventStartHour == hour && [tempEvent getStartMinute] >= minute)) {
+            return tempEvent;
+        }
+    }
+    return nil;
+}
+
+-(int)indexOfEventAfterHour:(int)hour andMinute:(int)minute {
+    int Count = 0;
+    for (Event *tempEvent in Events) {
+        int tempEventStartHour = [tempEvent getStartHour];
+        if (tempEventStartHour > hour || (tempEventStartHour >= hour && [tempEvent getStartMinute] >= minute)) {
+            return Count;
+        }
+        Count++;
+    }
+    return nil;
+}
+
 -(void)dealloc	{
 	[Name release];
 	[Events release];
