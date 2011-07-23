@@ -8,7 +8,7 @@
 
 #import "ScheduleViewController.h"
 #import "CCNAppDelegate.h"
-#import "DetailViewController.h"
+#import "ScheduleDetailViewController.h"
 #import "OverlayViewController.h"
 #import "Day.h"
 #import "Event.h"
@@ -37,8 +37,20 @@
     
 	searching = NO;
 	letUserSelectRow = YES;
-    selectedButton = 1; //Remove after implementing current time code.
-    currentDay = [Days objectAtIndex:0];
+    
+    NSCalendar *gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+    NSDateComponents *components = [gregorian components:(NSWeekdayCalendarUnit | NSHourCalendarUnit | NSMinuteCalendarUnit) fromDate:[NSDate date]];
+    
+    int dayOfTheWeek = [components weekday];
+    if (dayOfTheWeek == 1)
+        dayOfTheWeek = 7;
+    else
+        dayOfTheWeek--;
+    selectedButton = dayOfTheWeek; //Remove after implementing current time code.
+    [self daySelected:[daySelector viewWithTag:dayOfTheWeek]];
+    
+    NSLog(@"The Hour is %d",[components hour]);
+    NSLog(@"The Minute is %d",[components minute]);
 }
 
 - (void) viewDidAppear:(BOOL)animated  {
@@ -229,12 +241,12 @@
 		selectedEvent = [[currentDay getEvents] objectAtIndex:indexPath.row];
 	//Initialize the detail view controller and display it.
 	
-	DetailViewController *dvController = [[DetailViewController alloc] initWithNibName:@"DetailView" bundle:[NSBundle mainBundle]];
-	dvController.selectedTitle = [selectedEvent getDay];
-	dvController.selectedSubTitle = [selectedEvent getName];
+	ScheduleDetailViewController *dvController = [[ScheduleDetailViewController alloc] initWithNibName:@"ScheduleDetailView" bundle:[NSBundle mainBundle]];
+	dvController.selectedTitle = [selectedEvent getName];
+    [dvController setDay:selectedButton];
     dvController.selectedImage = [selectedEvent getImage];
     dvController.selectedBody = [selectedEvent getBody];
-	dvController.navigationBar = @"Selected Episode";
+	dvController.navigationBar = [selectedEvent getName];
 	[self.navigationController pushViewController:dvController animated:YES];
 	[dvController release];
 	dvController = nil;

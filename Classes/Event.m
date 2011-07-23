@@ -108,6 +108,7 @@
 	Event *copy = [[Event alloc] init];
     NSMutableArray *bodyCopy = [[NSMutableArray alloc] initWithArray:Body copyItems:YES];
     [copy setName:[Name copy]];
+    [copy setDay:[Day copy]];
     [copy setStartTime:[startTime copy]];
     [copy setEndTime:[endTime copy]];
     [copy setImage:[Image copy]];

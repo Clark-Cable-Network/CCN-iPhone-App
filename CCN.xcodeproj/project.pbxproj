@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1400D02A13D4FE5500E8F12F /* ScheduleDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1400D02813D4FE5500E8F12F /* ScheduleDetailViewController.m */; };
+		1400D02C13D4FF2F00E8F12F /* ScheduleDetailView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1400D02B13D4FF2F00E8F12F /* ScheduleDetailView.xib */; };
 		144FD32F12EB52C5001252B8 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 144FD32E12EB52C5001252B8 /* SystemConfiguration.framework */; };
 		144FD33212EB52F1001252B8 /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 144FD33012EB52F1001252B8 /* Reachability.m */; };
 		1460785913BEA317008EE9DD /* ScheduleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1460785813BEA317008EE9DD /* ScheduleViewController.m */; };
@@ -48,6 +50,9 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		1400D02813D4FE5500E8F12F /* ScheduleDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ScheduleDetailViewController.m; sourceTree = "<group>"; };
+		1400D02913D4FE5500E8F12F /* ScheduleDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScheduleDetailViewController.h; sourceTree = "<group>"; };
+		1400D02B13D4FF2F00E8F12F /* ScheduleDetailView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ScheduleDetailView.xib; sourceTree = "<group>"; };
 		144FD32E12EB52C5001252B8 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		144FD33012EB52F1001252B8 /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Reachability.m; sourceTree = "<group>"; };
 		144FD33112EB52F1001252B8 /* Reachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Reachability.h; sourceTree = "<group>"; };
@@ -166,6 +171,8 @@
 				1460785813BEA317008EE9DD /* ScheduleViewController.m */,
 				14C9019A12BFF2AA005A287D /* DetailViewController.h */,
 				14C9019B12BFF2AA005A287D /* DetailViewController.m */,
+				1400D02913D4FE5500E8F12F /* ScheduleDetailViewController.h */,
+				1400D02813D4FE5500E8F12F /* ScheduleDetailViewController.m */,
 				14D93F4A1329608C00216738 /* JoinUsViewController.h */,
 				14D93F4B1329608D00216738 /* JoinUsViewController.m */,
 			);
@@ -236,6 +243,7 @@
 				14FADEEA13AD7AA1007ECAD3 /* Images */,
 				148C3D7A12C7A05500C08914 /* OverlayView.xib */,
 				14C9018E12BFF20D005A287D /* DetailView.xib */,
+				1400D02B13D4FF2F00E8F12F /* ScheduleDetailView.xib */,
 				2840D7CD1179279E00D7F93C /* FirstView.xib */,
 				282CCBFD0DB6C98000C4EA27 /* JoinUsView.xib */,
 				28AD73870D9D96C1002E5188 /* MainWindow.xib */,
@@ -323,6 +331,7 @@
 				1486364912E55563003F1E51 /* NewsView.xib in Resources */,
 				148B6B63130046F10063D4ED /* Entitlements.plist in Resources */,
 				1460786113BEA87B008EE9DD /* ScheduleView.xib in Resources */,
+				1400D02C13D4FF2F00E8F12F /* ScheduleDetailView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -351,6 +360,7 @@
 				1460785E13BEA402008EE9DD /* Day.m in Sources */,
 				1460785F13BEA402008EE9DD /* Event.m in Sources */,
 				1490771513C9EC4400614EDB /* XMLParserSchedule.m in Sources */,
+				1400D02A13D4FE5500E8F12F /* ScheduleDetailViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

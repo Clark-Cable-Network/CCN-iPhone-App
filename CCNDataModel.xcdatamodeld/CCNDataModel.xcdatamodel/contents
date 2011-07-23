@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model name="" userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="837" systemVersion="10J869" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
+    <entity name="Article">
+        <attribute name="Body" optional="YES" attributeType="String"/>
+        <attribute name="Image" optional="YES" attributeType="String"/>
+        <attribute name="Name" optional="YES" attributeType="String"/>
+        <attribute name="subTitle" optional="YES" attributeType="String"/>
+    </entity>
+    <elements>
+        <element name="Article" positionX="160" positionY="192" width="128" height="105"/>
+    </elements>
+</model>
