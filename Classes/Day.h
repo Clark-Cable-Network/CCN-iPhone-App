@@ -22,6 +22,7 @@
 -(void)setName:(NSString *)newName;
 -(NSMutableArray*)getEvents;
 -(NSMutableArray*)getEventNames;
+-(NSMutableArray*)eventsWithName:(NSString *)name;
 -(NSString*)getName;
 -(Event*)eventAfterHour:(int)hour andMinute:(int)minute;
 -(int)indexOfEventAfterHour:(int)hour andMinute:(int)minute;

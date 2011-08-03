@@ -39,6 +39,16 @@
 	return EventNames;
 }
 
+-(NSMutableArray*)eventsWithName:(NSString *)name   {
+    NSMutableArray *matchingEvents = [[NSMutableArray alloc] init];
+    for (Event *tempEvent in Events) {
+        if ([[tempEvent getName] isEqualToString:name]) {
+            [matchingEvents addObject:tempEvent];
+        }
+    }
+    return matchingEvents;
+}
+
 -(NSString*)getName	{
 	return Name;
 }

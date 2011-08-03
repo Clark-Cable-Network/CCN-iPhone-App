@@ -11,7 +11,7 @@
 
 @implementation ScheduleDetailViewController
 
-@synthesize selectedTitle, Title, subTitle, selectedBody, selectedImage, Image, loadImage, ScrollView, navigationBar;
+@synthesize selectedTitle, Title, subTitle, startTimeLabel, endTimeLabel, alsoPlayingLabel, selectedEvent, selectedBody, airTimes, selectedImage, Image, loadImage, ScrollView, navigationBar;
 
 int Height;   //Add to this for each new element.
 
@@ -53,6 +53,9 @@ int Height;   //Add to this for each new element.
     if (ImageDownloader.image == nil) {
         ImageDownloader.delegate = self;
     }
+    
+    startTimeLabel.text = [startTimeLabel.text stringByAppendingString:[selectedEvent getStartTime]];
+    endTimeLabel.text = [endTimeLabel.text stringByAppendingString:[selectedEvent getEndTime]];
     
     NSString *NextIdentifier;
     for (NSString *currentString in selectedBody)   {

@@ -50,7 +50,8 @@
     [self daySelected:[daySelector viewWithTag:dayOfTheWeek]];
     
     int tableViewHeightSet = [currentDay indexOfEventAfterHour:[components hour] andMinute:[components minute]]*171 + 84;
-    [self.tableView setContentOffset:CGPointMake(0, tableViewHeightSet) animated:YES];
+    if (tableViewHeightSet != 84)
+        [self.tableView setContentOffset:CGPointMake(0, tableViewHeightSet) animated:YES];
 }
 
 - (void) viewDidAppear:(BOOL)animated  {
@@ -58,7 +59,7 @@
 }
 
 -(void)loadShows	{
-	NSURL *url = [[NSURL alloc] initWithString:@"http://www.zackhariton.com/App/Schedule.xml"];
+	NSURL *url = [[NSURL alloc] initWithString:@"http://www.zackhariton.com/App/Schedule2.xml"];
 	UIApplication *app = [UIApplication sharedApplication];
 	app.networkActivityIndicatorVisible = YES;
 	NSXMLParser *xmlParser = [[NSXMLParser alloc] initWithContentsOfURL:url];
@@ -247,6 +248,18 @@
     dvController.selectedImage = [selectedEvent getImage];
     dvController.selectedBody = [selectedEvent getBody];
 	dvController.navigationBar = [selectedEvent getName];
+    dvController.selectedEvent = selectedEvent;
+    
+    NSMutableArray *airTimes = [[NSMutableArray alloc] init];
+    for (Day *tempDay in Days) {
+        [airTimes addObjectsFromArray:[tempDay eventsWithName:[selectedEvent getName]]];
+    }
+    dvController.airTimes = airTimes;
+    NSLog(@"Matching events are.");
+    for (Event *tempEvent in airTimes) {
+        NSLog(@"%@ at %d on %@", [tempEvent getName], [tempEvent getStartTime], [tempEvent getDay]);
+    }
+    
 	[self.navigationController pushViewController:dvController animated:YES];
 	[dvController release];
 	dvController = nil;
