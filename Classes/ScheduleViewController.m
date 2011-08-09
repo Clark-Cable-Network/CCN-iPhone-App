@@ -59,7 +59,7 @@
 }
 
 -(void)loadShows	{
-	NSURL *url = [[NSURL alloc] initWithString:@"http://www.zackhariton.com/App/Schedule2.xml"];
+	NSURL *url = [[NSURL alloc] initWithString:@"http://www.zackhariton.com/App/Schedule3.xml"];
 	UIApplication *app = [UIApplication sharedApplication];
 	app.networkActivityIndicatorVisible = YES;
 	NSXMLParser *xmlParser = [[NSXMLParser alloc] initWithContentsOfURL:url];

@@ -49,49 +49,37 @@
 - (void)parser:(NSXMLParser *)parser didEndElement:(NSString *)elementName 
 namespaceURI:(NSString *)namespaceURI qualifiedName:(NSString *)qName {
 	if (useThisElement) {
-        NSMutableArray *data = [[currentElementValue componentsSeparatedByString:@"~"] mutableCopy];
-		Event *eventTemp = [[Event alloc] init];
-        [eventTemp setName:[data objectAtIndex:0]];
-        [eventTemp setDay:[data objectAtIndex:1]];
-        [eventTemp setStartTime:[data objectAtIndex:2]];
-        [eventTemp setEndTime:[data objectAtIndex:3]];
-        [eventTemp setMonth:[[data objectAtIndex:4] intValue]];
-        [eventTemp setYear:[[data objectAtIndex:5] intValue]];
-        [eventTemp setImage:[data objectAtIndex:6]];
-        [data removeObjectAtIndex:0];
-        [data removeObjectAtIndex:0];
-        [data removeObjectAtIndex:0];
-        [data removeObjectAtIndex:0];
-        [data removeObjectAtIndex:0];
-        [data removeObjectAtIndex:0];
-        [data removeObjectAtIndex:0];
-        [eventTemp setBody:data];
-        
-        int Count = 0;
-		currentElementShowLocation = -1;
-        
-        for (Day *dayTemp in Days)	{
-			if ([[dayTemp getName] isEqualToString:[eventTemp getDay]]) {
-				currentElementShowLocation = Count;
-			}
-			Count++;
-		}
-        
-		if (currentElementShowLocation == -1)	{
-			Day *dayTemp = [[Day alloc] init];
-			NSMutableArray *eventsTemp = [[NSMutableArray alloc] init];
-			[eventsTemp addObject:eventTemp];
-            [dayTemp setEvents:eventsTemp];
-			[dayTemp setName:[eventTemp getDay]];
-			[Days addObject:dayTemp];
-			[dayTemp release];	//Might cause crash
-			//[episodesTemp release];
-		}
-		else	{
-			[[Days objectAtIndex:currentElementShowLocation] addEvent:eventTemp];
-		}
+        NSMutableArray *data = [[currentElementValue componentsSeparatedByString:@"~S~"] mutableCopy];
+        NSMutableArray *preBody = [[[data objectAtIndex:0] componentsSeparatedByString:@"~"] mutableCopy];
+        NSString *Name = [preBody objectAtIndex:0];
+        NSString *Image = [preBody objectAtIndex:1];
+        NSMutableArray *Body = [[[data objectAtIndex:1] componentsSeparatedByString:@"~"] mutableCopy];
+        [preBody removeObjectAtIndex:0];
+        [preBody removeObjectAtIndex:0];
+        for (int Count = 0; Count < [preBody count]; Count = Count+3) {
+            Event *eventTemp = [[Event alloc] init];
+            [eventTemp setName:Name];
+            [eventTemp setImage:Image];
+            [eventTemp setBody:Body];
+            [eventTemp setDay:[preBody objectAtIndex:Count]];
+            [eventTemp setStartTime:[preBody objectAtIndex:Count+1]];
+            [eventTemp setEndTime:[preBody objectAtIndex:Count+2]];
+            BOOL newDay = YES;
+            for (Day *dayTemp in Days) {
+                if (newDay && [dayTemp.Name isEqualToString:eventTemp.Day])    {
+                    newDay = NO;
+                    [dayTemp addEvent:eventTemp];
+                }
+            }
+            if (newDay) {
+                Day *newDay = [[Day alloc] init];
+                [newDay setName:eventTemp.Day];
+                [newDay addEvent:eventTemp];
+                [Days addObject:newDay];
+                //Need to develop method to reorder days in the correct order.
+            }
+        }
 		[currentElementValue setString:@""];
-		[eventTemp release];	//Might cause crash
         useThisElement = NO;
 	}
 }

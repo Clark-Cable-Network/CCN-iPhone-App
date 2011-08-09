@@ -18,13 +18,11 @@
     return self;
 }
 
-- (void) setName:(NSString *)newName setDay:(NSString *)newDay setStartTime:(NSString *)newStartTime setEndTime:(NSString *)newEndTime setMonth:(int)newMonth setYear:(int)newYear setImage:(NSString *)newImage setBody:(NSMutableArray *)newBody	{
+- (void) setName:(NSString *)newName setDay:(NSString *)newDay setStartTime:(NSString *)newStartTime setEndTime:(NSString *)newEndTime setImage:(NSString *)newImage setBody:(NSMutableArray *)newBody	{
 	Name = newName;
     Day = newDay;
 	startTime = newStartTime;
     endTime = newEndTime;
-    Month = newMonth;
-    Year = newYear;
     Image = newImage;
     Body = newBody;
 }
@@ -44,12 +42,6 @@
 }
 - (void) setEndTime:(NSString *)newEndTime    {
     endTime = newEndTime;
-}
-- (void) setMonth:(int)newMonth {
-    Month = newMonth;
-}
-- (void) setYear:(int)newYear   {
-    Year = newYear;
 }
 - (void) setImage:(NSString *)newImage  {
     Image = newImage;
@@ -101,12 +93,6 @@
 }
 - (int)getEndMinute {
     return [[[[[endTime componentsSeparatedByString:@":"] objectAtIndex:1] componentsSeparatedByString:@" "] objectAtIndex:0] intValue];
-}
-- (int)getMonth {
-    return Month;
-}
-- (int)getYear  {
-    return Year;
 }
 - (NSString*)getImage   {
     return Image;
