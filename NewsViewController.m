@@ -127,6 +127,7 @@
         UIImageView *imageView = [[NewsItems objectAtIndex:indexPath.row] getImageView];
         imageView.tag = 3;
         [cell addSubview:imageView];
+        [[cell viewWithTag:3] setHidden:NO];
 	}
 	return cell;
 }
