@@ -245,16 +245,13 @@
 - (void) searchTableView {
 	NSString *searchText = searchBar.text;
 	
-	int Count = 0;
 	for (Article *newsItemTemp in NewsItems)
 	{
 		NSString *sTemp = [newsItemTemp getName];
 		NSRange titleResultsRange = [sTemp rangeOfString:searchText options:NSCaseInsensitiveSearch];
 		
-		if (titleResultsRange.length > 0)	{
-			[copyNewsItems addObject:[NewsItems objectAtIndex:Count]];
-		}
-		Count++;
+		if (titleResultsRange.length > 0)
+			[copyNewsItems addObject:newsItemTemp];
 	}
 }
 

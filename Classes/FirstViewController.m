@@ -268,7 +268,6 @@
 		[searchArray addObjectsFromArray:array];
 	}
 	
-	int Count = 0;
 	for (Article *episodeTemp in searchArray)
 	{
 		BOOL added = NO;
@@ -276,16 +275,14 @@
 		NSRange titleResultsRange = [sTemp rangeOfString:searchText options:NSCaseInsensitiveSearch];
 		
 		if (titleResultsRange.length > 0)	{
-			[copyShows addObject:[searchArray objectAtIndex:Count]];
+			[copyShows addObject:episodeTemp];
 			added = YES;
 		}
 		
 		sTemp = [episodeTemp getsubTitle];
 		titleResultsRange = [sTemp rangeOfString:searchText options:NSCaseInsensitiveSearch];
 		if (titleResultsRange.length > 0 && !added)
-			[copyShows addObject:[searchArray objectAtIndex:Count]];
-		
-		Count++;
+			[copyShows addObject:episodeTemp];
 	}
 	
 	[searchArray release];
