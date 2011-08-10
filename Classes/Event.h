@@ -10,7 +10,7 @@
 
 @interface Event : NSObject {
 	NSString *Name, *Day, *startTime, *endTime, *Image;
-    NSMutableArray *Body;
+    NSMutableArray *Body, *allTimes;
     UIImageView *imageView;
 }
 
@@ -20,15 +20,17 @@
 @property (nonatomic, retain) NSString *endTime;
 @property (nonatomic, retain) NSString *Image;
 @property (nonatomic, retain) NSMutableArray *Body;
+@property (nonatomic, retain) NSMutableArray *allTimes;
 @property (nonatomic, retain) UIImageView *imageView;
 
-- (void) setName:(NSString *)newName setDay:(NSString *)newDay setStartTime:(NSString *)newStartTime setEndTime:(NSString *)newEndTime setImage:(NSString *)newImage setBody:(NSMutableArray *)newBody;
+- (void) setName:(NSString *)newName setDay:(NSString *)newDay setStartTime:(NSString *)newStartTime setEndTime:(NSString *)newEndTime setImage:(NSString *)newImage setBody:(NSMutableArray *)newBody setAllTimes:(NSMutableArray *)newAllTimes;
 - (void) setName:(NSString *)newName;
 - (void) setDay:(NSString *)newDay;
 - (void) setStartTime:(NSString *)newStartTime;
 - (void) setEndTime:(NSString *)newEndTime;
 - (void) setImage:(NSString *)newImage;
 - (void) setBody:(NSMutableArray *)newBody;
+- (void) setAllTimes:(NSMutableArray *)newAllTimes;
 - (void) setImageView:(UIImageView *)newImageView;
 - (NSString*)getName;
 - (NSString*)getDay;
@@ -40,8 +42,12 @@
 - (int)getEndMinute;
 - (NSString*)getImage;
 - (NSString*)getDescription;
-- (NSMutableArray*)getBody;
 - (UIImageView*)getImageView;
+- (NSMutableArray*)getBody;
+- (NSMutableArray*)getAllTimes;
+- (NSMutableArray*)getDays;
+- (NSMutableArray*)getStartTimes;
+- (NSMutableArray*)getEndTimes;
 - (Event*)deepCopy;
 
 @end

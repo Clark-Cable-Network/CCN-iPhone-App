@@ -10,7 +10,7 @@
 
 @implementation Event
 
-@synthesize Name, Day, startTime, endTime, Image, Body, imageView;
+@synthesize Name, Day, startTime, endTime, Image, Body, allTimes, imageView;
 
 - (id) init   {
     imageView = [[UIImageView alloc] initWithFrame:CGRectMake(204, 6, 107, 159)];
@@ -30,7 +30,9 @@
 - (void) setBody:(NSMutableArray *)newBody  {
     Body = newBody;
 }
-
+- (void) setAllTimes:(NSMutableArray *)newAllTimes  {
+    allTimes = newAllTimes;
+}
 - (void) setName:(NSString *)newName    {
     Name = newName;
 }
@@ -49,9 +51,6 @@
 - (void) setImageView:(UIImageView *)newImageView   {
     imageView = newImageView;
 }
-- (NSMutableArray*) getBody {
-    return Body;
-}
 - (NSString*)getName	{
 	return Name;
 }
@@ -60,6 +59,33 @@
 }
 - (NSString*)getStartTime	{
 	return startTime;
+}
+- (NSMutableArray*) getBody {
+    return Body;
+}
+- (NSMutableArray*) getAllTimes {
+    return allTimes;
+}
+- (NSMutableArray*) getDays {
+    NSMutableArray *days = [[NSMutableArray alloc] init];
+    for (int Count = 0; Count < [allTimes count]; Count = Count+3) {
+        [days addObject:[allTimes objectAtIndex:Count]];
+    }
+    return days;
+}
+- (NSMutableArray*) getStartTimes {
+    NSMutableArray *startTimes = [[NSMutableArray alloc] init];
+    for (int Count = 1; Count < [allTimes count]; Count = Count+3) {
+        [startTimes addObject:[allTimes objectAtIndex:Count]];
+    }
+    return startTimes;
+}
+- (NSMutableArray*) getEndTimes {
+    NSMutableArray *endTimes = [[NSMutableArray alloc] init];
+    for (int Count = 2; Count < [allTimes count]; Count = Count+3) {
+        [endTimes addObject:[allTimes objectAtIndex:Count]];
+    }
+    return endTimes;
 }
 - (int)getStartHour {
     if ([[[startTime componentsSeparatedByString:@" "] objectAtIndex:1] isEqualToString:@"AM"]) {

@@ -31,7 +31,7 @@
 	[self loadShows];
 	
 	//Initialize the copy array.
-	copyDays = [[NSMutableArray alloc] init];
+	searchEvents = [[NSMutableArray alloc] init];
 	
 	self.navigationItem.title = @"Schedule";
     
@@ -166,10 +166,7 @@
 }
 
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-	if (searching) {
-		return 44;
-	}
-	return [self tableView:tableView cellForRowAtIndexPath:indexPath].frame.size.height;
+	return 171;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -183,18 +180,35 @@
 	UILabel *lblTemp1 = (UILabel *)[cell viewWithTag:1];
 	UILabel *lblTemp2 = (UILabel *)[cell viewWithTag:2];
     UILabel *lblTemp3 = (UILabel *)[cell viewWithTag:4];
+    
+    cell.frame = CGRectMake(0, 0, 300, 171);
 	
 	// Set up the cell...
 	if (searching)	{
-		lblTemp1.text = [NSString stringWithFormat:@"%@%@%@",[[copyDays objectAtIndex:indexPath.row] getDay], @": ",[[copyDays objectAtIndex:indexPath.row] getName]];
-		lblTemp2.frame = CGRectMake(10, 24, 290, 15);
-		lblTemp2.numberOfLines = 1;
-		[self tableView:tableView heightForRowAtIndexPath:indexPath];
-		lblTemp2.text = [[copyDays objectAtIndex:indexPath.row] getDescription];
-        [[cell viewWithTag:3] setHidden:YES];
+        lblTemp1.text = [[searchEvents objectAtIndex:indexPath.row] getName];
         
-        lblTemp3.text = [[[currentDay getEvents] objectAtIndex:indexPath.row] getStartTime];
-        lblTemp3.frame = CGRectMake(10, 24, 181, 20);
+		NSString *Temp = @"";
+        //These are returning with 0 objects for some reason.
+        NSMutableArray *days = [[searchEvents objectAtIndex:indexPath.row] getDays];
+        NSMutableArray *startTimes = [[searchEvents objectAtIndex:indexPath.row] getStartTimes];
+        NSMutableArray *endTimes = [[searchEvents objectAtIndex:indexPath.row] getEndTimes];
+        
+        NSString *lastDay;
+        for (int Count = 0; Count < [days count]; Count++) {
+            if (lastDay == nil || ![lastDay isEqualToString:[days objectAtIndex:Count]])
+                Temp = [Temp stringByAppendingString:[NSString stringWithFormat:@"%@\n", [days objectAtIndex:Count]]];
+            else
+                Temp = [Temp stringByAppendingString:[NSString stringWithFormat:@"  %@ - %@\n", [startTimes objectAtIndex:Count], [endTimes objectAtIndex:Count]]];
+        }
+        
+        lblTemp3.numberOfLines = 8;
+        CGSize lblTemp3Size = [Temp sizeWithFont:lblTemp3.font constrainedToSize:CGSizeMake(181, 130)];
+        lblTemp3.frame = CGRectMake(10, 40, 181, lblTemp3Size.height);
+        lblTemp3.text = Temp;
+        
+        UIImageView *imageView = [[[currentDay getEvents] objectAtIndex:indexPath.row] getImageView];;
+        imageView.tag = 3;
+        [cell addSubview:imageView];
 	}
 	else	{
 		NSString *Temp = [[[currentDay getEvents] objectAtIndex:indexPath.row] getDescription];
@@ -202,7 +216,6 @@
         lblTemp2.numberOfLines = 8;
         CGSize lblTemp2Size = [Temp sizeWithFont:lblTemp2.font constrainedToSize:CGSizeMake(181, 130)];
         lblTemp2.frame = CGRectMake(10, 40, 181, lblTemp2Size.height);
-        cell.frame = CGRectMake(0, 0, 300, 171);
 		lblTemp2.text = Temp;
         
         lblTemp3.text = [[[[[currentDay getEvents] objectAtIndex:indexPath.row] getStartTime] stringByAppendingString:@" - "] stringByAppendingString:[[[currentDay getEvents] objectAtIndex:indexPath.row] getEndTime]];
@@ -223,7 +236,7 @@
 // Customize the number of rows in the table view.
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
 	if (searching)
-		return [copyDays count];
+		return [searchEvents count];
 	else
         return [[currentDay getEvents] count];
 }
@@ -237,7 +250,7 @@
 	Event *selectedEvent = [[Event alloc] init];
 	
 	if (searching)
-		selectedEvent = [copyDays objectAtIndex:indexPath.row];
+		selectedEvent = [searchEvents objectAtIndex:indexPath.row];
 	else
 		selectedEvent = [[currentDay getEvents] objectAtIndex:indexPath.row];
 	//Initialize the detail view controller and display it.
@@ -314,7 +327,7 @@
 
 - (void)searchBar:(UISearchBar *)theSearchBar textDidChange:(NSString *)searchText {
 	//Remove all objects first.
-	[copyDays removeAllObjects];
+	[searchEvents removeAllObjects];
 	
 	if([searchText length] > 0) {
 		[ovController.view removeFromSuperview];
@@ -343,30 +356,25 @@
 	NSMutableArray *searchArray = [[NSMutableArray alloc] init];
 	NSMutableArray *array = [[NSMutableArray alloc] init];
 	
-	for (Day *currentDay in Days)
+	for (Day *tempDay in Days)
 	{
-		array = [currentDay getEvents];
+		array = [tempDay getEvents];
 		[searchArray addObjectsFromArray:array];
 	}
 	
-	int Count = 0;
 	for (Event *eventTemp in searchArray)
 	{
-		BOOL added = NO;
+        BOOL alreadyAdded = NO;
 		NSString *sTemp = [eventTemp getName];
 		NSRange titleResultsRange = [sTemp rangeOfString:searchText options:NSCaseInsensitiveSearch];
-		
-		if (titleResultsRange.length > 0)	{
-			[copyDays addObject:[searchArray objectAtIndex:Count]];
-			added = YES;
-		}
-		
-		sTemp = [eventTemp getDay];
-		titleResultsRange = [sTemp rangeOfString:searchText options:NSCaseInsensitiveSearch];
-		if (titleResultsRange.length > 0 && !added)
-			[copyDays addObject:[searchArray objectAtIndex:Count]];
-		
-		Count++;
+        
+        for (Event *searchEventTemp in searchEvents) {
+            if ([searchEventTemp.Name isEqualToString:sTemp])
+                alreadyAdded = YES;
+        }
+        
+		if (!alreadyAdded && titleResultsRange.length > 0)
+			[searchEvents addObject:eventTemp];
 	}
 	
 	[searchArray release];
@@ -468,7 +476,7 @@
 	[Days release];
 	[searchBar release];
 	[ovController release];
-	[copyDays release];
+	[searchEvents release];
 	[super dealloc];
 }
 

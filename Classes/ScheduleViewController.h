@@ -14,7 +14,7 @@
 
 @interface ScheduleViewController : UITableViewController {
 	NSMutableArray *Days;
-	NSMutableArray *copyDays;
+	NSMutableArray *searchEvents;
 	IBOutlet UISearchBar *searchBar;
 	BOOL searching;
 	BOOL letUserSelectRow;

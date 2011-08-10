@@ -61,6 +61,7 @@ namespaceURI:(NSString *)namespaceURI qualifiedName:(NSString *)qName {
             [eventTemp setName:Name];
             [eventTemp setImage:Image];
             [eventTemp setBody:Body];
+            [eventTemp setAllTimes:preBody];
             [eventTemp setDay:[preBody objectAtIndex:Count]];
             [eventTemp setStartTime:[preBody objectAtIndex:Count+1]];
             [eventTemp setEndTime:[preBody objectAtIndex:Count+2]];
