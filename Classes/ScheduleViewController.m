@@ -26,6 +26,9 @@
 	hostReachable = [[Reachability reachabilityWithHostName: @"www.clarku.edu"] retain];
 	[hostReachable startNotifier];
 	
+    searching = NO;
+	letUserSelectRow = YES;
+    justLoaded = YES;
 	Days = [[NSMutableArray alloc] init];
 	
 	[self loadShows];
@@ -34,9 +37,6 @@
 	searchEvents = [[NSMutableArray alloc] init];
 	
 	self.navigationItem.title = @"Schedule";
-    
-	searching = NO;
-	letUserSelectRow = YES;
     
     NSCalendar *gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
     NSDateComponents *components = [gregorian components:(NSWeekdayCalendarUnit | NSHourCalendarUnit | NSMinuteCalendarUnit) fromDate:[NSDate date]];
@@ -55,6 +55,11 @@
 }
 
 - (void) viewDidAppear:(BOOL)animated  {
+    if (!justLoaded)
+        if ([Days count] == 0)
+            [self loadShows];
+    else
+        justLoaded = NO;
     [self loadImagesForOnscreenRows];
 }
 
@@ -74,26 +79,29 @@
 	
 	[xmlParser parse];
     
-    daySelector = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 44, 320, 40)];
-    int Count = 0;
-	for (Day *dayTemp in [parser getDays])	{
-		[Days addObject:[dayTemp deepCopy]];
-        UIButton *tempButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-        tempButton.frame = CGRectMake(Count*70+5, 3, 65, 32);
-        [tempButton setTitle:[dayTemp getName] forState:UIControlStateNormal];
-        [tempButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-        tempButton.tag = Count + 1;
-        [tempButton addTarget:self action:@selector(daySelected:) forControlEvents:UIControlEventTouchUpInside];
-        [daySelector addSubview:tempButton];
-        Count++;
-	}
-    [daySelector setContentSize:CGSizeMake(Count*70+5, 40)];
+    if (justLoaded) {
+        daySelector = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 44, 320, 40)];
+        int Count = 0;
+        for (Day *dayTemp in [parser getDays])	{
+            [Days addObject:[dayTemp deepCopy]];
+            UIButton *tempButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+            tempButton.frame = CGRectMake(Count*70+5, 3, 65, 32);
+            [tempButton setTitle:[dayTemp getName] forState:UIControlStateNormal];
+            [tempButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+            tempButton.tag = Count + 1;
+            [tempButton addTarget:self action:@selector(daySelected:) forControlEvents:UIControlEventTouchUpInside];
+            [daySelector addSubview:tempButton];
+            Count++;
+        }
+        [daySelector setContentSize:CGSizeMake(Count*70+5, 40)];
+        
+        //Add the search bar and daySelector
+        UIView *tableHeader = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 84)];
+        [tableHeader addSubview:searchBar];
+        [tableHeader addSubview:daySelector];
+        self.tableView.tableHeaderView = tableHeader;
+    }
     
-    //Add the search bar and daySelector
-    UIView *tableHeader = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 84)];
-    [tableHeader addSubview:searchBar];
-    [tableHeader addSubview:daySelector];
-	self.tableView.tableHeaderView = tableHeader;
 	searchBar.autocorrectionType = UITextAutocorrectionTypeNo;
 	
 	//[xmlParser release];

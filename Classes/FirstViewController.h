@@ -15,7 +15,7 @@
 	NSMutableArray *Shows;
 	NSMutableArray *copyShows;
 	IBOutlet UISearchBar *searchBar;
-	BOOL searching;
+	BOOL searching, justLoaded;
 	BOOL letUserSelectRow;
 	
 	OverlayViewController *ovController;

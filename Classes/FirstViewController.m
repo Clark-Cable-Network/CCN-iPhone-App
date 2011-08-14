@@ -18,18 +18,14 @@
 
 @implementation FirstViewController
 
-- (void)viewDidLoad {
-    [super viewDidLoad];
-	
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(checkNetworkStatus:) name:kReachabilityChangedNotification object:nil];
-
+-(void)viewDidLoad  {
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(checkNetworkStatus:) name:kReachabilityChangedNotification object:nil];
+    
 	hostReachable = [[Reachability reachabilityWithHostName: @"www.clarku.edu"] retain];
 	[hostReachable startNotifier];
 	
 	Shows = [[NSMutableArray alloc] init];
-	
-	[self loadShows];
-	
+    
 	//Initialize the copy array.
 	copyShows = [[NSMutableArray alloc] init];
 	
@@ -41,9 +37,19 @@
 	
 	searching = NO;
 	letUserSelectRow = YES;
+    justLoaded = YES;
+    [self loadShows];
 }
 
 - (void) viewDidAppear:(BOOL)animated  {
+    if (!justLoaded)    {
+        if ([Shows count] == 0) {
+            [self loadShows];
+            [self.tableView reloadData];
+        }
+    }
+    else
+        justLoaded = NO;
     [self loadImagesForOnscreenRows];
 }
 
@@ -67,7 +73,7 @@
 		[Shows addObject:[showTemp deepCopy]];
 	}
 	
-	//[xmlParser release];
+	[xmlParser release];
 }
 
 #pragma mark Table view methods

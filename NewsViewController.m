@@ -21,8 +21,6 @@
 	
 	NewsItems = [[NSMutableArray alloc] init];
 	
-	[self loadNewsItems];
-	
 	//Initialize the copy array.
 	copyNewsItems = [[NSMutableArray alloc] init];
 	
@@ -34,10 +32,19 @@
 	
 	searching = NO;
 	letUserSelectRow = YES;
-    //[self loadImagesForOnscreenRows];
+    justLoaded = YES;
+    [self loadNewsItems];
 }
 
 - (void) viewDidAppear:(BOOL)animated  {
+    if (!justLoaded)    {
+        if ([NewsItems count] == 0) {
+            [self loadNewsItems];
+            [self.tableView reloadData];
+        }
+    }
+    else
+        justLoaded = NO;
     [self loadImagesForOnscreenRows];
 }
 

@@ -16,7 +16,7 @@
 	NSMutableArray *Days;
 	NSMutableArray *searchEvents;
 	IBOutlet UISearchBar *searchBar;
-	BOOL searching;
+	BOOL searching, justLoaded;
 	BOOL letUserSelectRow;
     UIScrollView *daySelector;
     int selectedButton;
