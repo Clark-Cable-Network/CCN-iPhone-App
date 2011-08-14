@@ -53,6 +53,7 @@
 		1400D02813D4FE5500E8F12F /* ScheduleDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ScheduleDetailViewController.m; sourceTree = "<group>"; };
 		1400D02913D4FE5500E8F12F /* ScheduleDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScheduleDetailViewController.h; sourceTree = "<group>"; };
 		1400D02B13D4FF2F00E8F12F /* ScheduleDetailView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ScheduleDetailView.xib; sourceTree = "<group>"; };
+		1418667313F8491200EEFB08 /* Readme */ = {isa = PBXFileReference; lastKnownFileType = text; path = Readme; sourceTree = "<group>"; };
 		144FD32E12EB52C5001252B8 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		144FD33012EB52F1001252B8 /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Reachability.m; sourceTree = "<group>"; };
 		144FD33112EB52F1001252B8 /* Reachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Reachability.h; sourceTree = "<group>"; };
@@ -224,6 +225,7 @@
 				29B97323FDCFA39411CA2CEA /* Frameworks */,
 				19C28FACFE9D520D11CA2CBB /* Products */,
 				148B6B62130046F10063D4ED /* Entitlements.plist */,
+				1418667313F8491200EEFB08 /* Readme */,
 			);
 			name = CCN;
 			sourceTree = "<group>";
