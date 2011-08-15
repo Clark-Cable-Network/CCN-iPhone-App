@@ -104,7 +104,7 @@
     
 	searchBar.autocorrectionType = UITextAutocorrectionTypeNo;
 	
-	//[xmlParser release];
+	[xmlParser release];
 }
 
 - (void) updateCurrentDayWithDay:(NSString *)newDay    {
@@ -134,6 +134,7 @@
     [daySelector setContentOffset:CGPointMake(offset, 0) animated:YES];
     currentDay = [Days objectAtIndex:tempButton.tag-1];
     [self.tableView reloadData];
+    [self loadImagesForOnscreenRows];
 }
 
 #pragma mark Table view methods
@@ -229,8 +230,7 @@
         lblTemp3.text = [[[[[currentDay getEvents] objectAtIndex:indexPath.row] getStartTime] stringByAppendingString:@" - "] stringByAppendingString:[[[currentDay getEvents] objectAtIndex:indexPath.row] getEndTime]];
         lblTemp3.frame = CGRectMake(10, 22, 181, 20);
         
-        
-        UIImageView *imageView = [[[currentDay getEvents] objectAtIndex:indexPath.row] getImageView];;
+        UIImageView *imageView = [[[currentDay getEvents] objectAtIndex:indexPath.row] getImageView];
         imageView.tag = 3;
         [cell addSubview:imageView];
 	}
