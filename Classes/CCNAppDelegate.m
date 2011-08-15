@@ -49,6 +49,7 @@
 
 
 - (void)applicationWillEnterForeground:(UIApplication *)application {
+    [[self.tabBarController.viewControllers objectAtIndex:self.tabBarController.selectedIndex] viewDidAppear:NO];
     /*
      Called as part of  transition from the background to the inactive state: here you can undo many of the changes made on entering the background.
      */
