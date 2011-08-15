@@ -5,5 +5,4 @@ Things that need to get done for 1.0 release.
 4. Fix Search in Schedule view.
 5. When in airplane mode the appropriate message appears saying there is no internet connection on the home screen. However when selecting the schedule view the app crashes. This only happens on the schedule view not on the news view. This happens whenever the schedule view is not loaded.
 6. When taking the app out of the background the no internet connection displays multiple times.
-7. If data didn't load because there was no internet connection when internet connection is restored the data still doesn't load. Need to add a refresh data method which is activated when internet connection is restored.
 8. There is a slight delay when a section is selected before it appears. Should have an overlay on the section with a spinner to indicated that it is loading and have the section appear immediately.
