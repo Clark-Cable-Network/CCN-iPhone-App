@@ -85,8 +85,61 @@ namespaceURI:(NSString *)namespaceURI qualifiedName:(NSString *)qName {
 	}
 }
 
+-(int)numberForDayOfTheWeek:(NSString*)dayOfTheWeek   {
+    if ([dayOfTheWeek isEqualToString:@"Mon"])
+        return 0;
+    else
+        if ([dayOfTheWeek isEqualToString:@"Tue"])
+            return 1;
+        else
+            if ([dayOfTheWeek isEqualToString:@"Wed"])
+                return 2;
+            else
+                if ([dayOfTheWeek isEqualToString:@"Thu"] || [dayOfTheWeek isEqualToString:@"Thur"])
+                    return 3;
+                else
+                    if ([dayOfTheWeek isEqualToString:@"Fri"])
+                        return 4;
+                    else
+                        if ([dayOfTheWeek isEqualToString:@"Sat"])
+                            return 5;
+                        else
+                            if ([dayOfTheWeek isEqualToString:@"Sun"])
+                                return 6;
+                            else
+                                return -1;
+}
+
 -(NSMutableArray*)getDays	{
-	return Days;
+    NSMutableArray *tempDays = [[NSMutableArray alloc] initWithArray:Days];
+    for (int dayCount = 0; dayCount < [Days count]; dayCount++) {
+        Day *dayTemp = [Days objectAtIndex:dayCount];
+        NSMutableArray *tempEvents = [[NSMutableArray alloc] init];
+        int numberOfEvents = [dayTemp.Events count];
+        for (int Count = 0; Count < numberOfEvents; Count++) {
+            int indexOfSoonest = 0;
+            int currentStartHour = [[dayTemp.Events objectAtIndex:0] getStartHour];
+            int currentStartMinute = [[dayTemp.Events objectAtIndex:0] getStartMinute];
+            for (int Count2 = 0; Count2 < [dayTemp.Events count]; Count2++) {
+                int startHour = [[dayTemp.Events objectAtIndex:Count2] getStartHour];
+                int startMinute = [[dayTemp.Events objectAtIndex:Count2] getStartMinute];
+                if (startHour < currentStartHour || (startHour == currentStartHour && (startMinute < currentStartMinute))) {
+                    indexOfSoonest = Count2;
+                    currentStartHour = startHour;
+                    currentStartMinute = startMinute;
+                }
+            }
+            [tempEvents addObject:[dayTemp.Events objectAtIndex:indexOfSoonest]];
+            [dayTemp.Events removeObjectAtIndex:indexOfSoonest];
+        }
+        [dayTemp setEvents:tempEvents];
+        int indexOfDay = [self numberForDayOfTheWeek:dayTemp.Name];
+        if (indexOfDay != -1)
+            [tempDays replaceObjectAtIndex:indexOfDay withObject:dayTemp];
+        else
+            [tempDays addObject:dayTemp];
+    }
+	return tempDays;
 }
 
 - (void) dealloc {

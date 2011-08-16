@@ -132,7 +132,11 @@
         offset = daySelector.contentSize.width - 320;
     }
     [daySelector setContentOffset:CGPointMake(offset, 0) animated:YES];
-    currentDay = [Days objectAtIndex:tempButton.tag-1];
+    
+    //The fix may need to be more robust than this.
+    if ([Days count] >= tempButton.tag-1) {
+        currentDay = [Days objectAtIndex:tempButton.tag-1];
+    }
     [self.tableView reloadData];
     [self loadImagesForOnscreenRows];
 }

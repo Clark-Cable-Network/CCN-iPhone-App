@@ -1,8 +1,8 @@
 Things that need to get done for 1.0 release.
-1. Fix the Schedule View's XML Parser to sort the days at the end of the process.
-2. This has been mostly fixed. Now the uiimageview mearly flashes gray while reloading. (Fix bug that causes images to not display even when they are loaded in the schedule view.)
-3. Create method for viewing other days movie is playing in the event view controller.
-4. Fix Search in Schedule view.
-5. When in airplane mode the appropriate message appears saying there is no internet connection on the home screen. However when selecting the schedule view the app crashes. This only happens on the schedule view not on the news view. This happens whenever the schedule view is not loaded.
-6. When taking the app out of the background the no internet connection displays multiple times.
-7. There is a slight delay when a section is selected before it appears. Should have an overlay on the section with a spinner to indicated that it is loading and have the section appear immediately.
+1. This has been mostly fixed. Now the uiimageview mearly flashes gray while reloading. (Fix bug that causes images to not display even when they are loaded in the schedule view.)
+2. Create method for viewing other days movie is playing in the event view controller.
+3. Fix Search in Schedule view.
+4. When in airplane mode the appropriate message appears saying there is no internet connection on the home screen. However when selecting the schedule view the app crashes. This only happens on the schedule view not on the news view. This happens whenever the schedule view is not loaded.
+5. When taking the app out of the background the no internet connection displays multiple times.
+6. There is a slight delay when a section is selected before it appears. Should have an overlay on the section with a spinner to indicated that it is loading and have the section appear immediately.
+7. Fix bug where in the schedule view the images do not automatically load if the view is moved to corresponde with the time. The top images are loaded not the other ones. (Maybe just make it so that it is not animated if I want to do it the lazy way).
