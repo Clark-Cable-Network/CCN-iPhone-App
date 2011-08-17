@@ -18,26 +18,7 @@
 
 @implementation ScheduleViewController
 
-- (void)viewDidLoad {
-    [super viewDidLoad];
-	
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(checkNetworkStatus:) name:kReachabilityChangedNotification object:nil];
-    
-	hostReachable = [[Reachability reachabilityWithHostName: @"www.clarku.edu"] retain];
-	[hostReachable startNotifier];
-	
-    searching = NO;
-	letUserSelectRow = YES;
-    justLoaded = YES;
-	Days = [[NSMutableArray alloc] init];
-	
-	[self loadShows];
-	
-	//Initialize the copy array.
-	searchEvents = [[NSMutableArray alloc] init];
-	
-	self.navigationItem.title = @"Schedule";
-    
+- (void)moveToNextEvent {
     NSCalendar *gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
     NSDateComponents *components = [gregorian components:(NSWeekdayCalendarUnit | NSHourCalendarUnit | NSMinuteCalendarUnit) fromDate:[NSDate date]];
     
@@ -54,10 +35,45 @@
         [self.tableView setContentOffset:CGPointMake(0, tableViewHeightSet) animated:YES];
 }
 
+- (void)viewDidLoad {
+    [super viewDidLoad];
+	
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(checkNetworkStatus:) name:kReachabilityChangedNotification object:nil];
+    
+//	hostReachable = [[Reachability reachabilityWithHostName: @"www.clarku.edu"] retain];
+//	[hostReachable startNotifier];
+	
+    searching = NO;
+	letUserSelectRow = YES;
+    justLoaded = YES;
+	Days = [[NSMutableArray alloc] init];
+	
+	[self loadShows];
+	
+	//Initialize the copy array.
+	searchEvents = [[NSMutableArray alloc] init];
+	
+	self.navigationItem.title = @"Schedule";
+    
+    [self moveToNextEvent];
+}
+
+- (BOOL) isThereData   {
+    for (Day *dayTemp in Days) {
+        if ([dayTemp.Events count] != 0)    {
+            return YES;
+        }
+    }
+    return NO;
+}
+
 - (void) viewDidAppear:(BOOL)animated  {
-    if (!justLoaded)
-        if ([Days count] == 0)
-            [self loadShows];
+    if (!justLoaded && ![self isThereData])    {
+        justLoaded = YES;
+        [self loadShows];
+        [self moveToNextEvent];
+        justLoaded = NO;
+    }
     else
         justLoaded = NO;
     [self loadImagesForOnscreenRows];
@@ -82,6 +98,7 @@
     if (justLoaded) {
         daySelector = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 44, 320, 40)];
         int Count = 0;
+        [Days removeAllObjects];
         for (Day *dayTemp in [parser getDays])	{
             [Days addObject:[dayTemp deepCopy]];
             UIButton *tempButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
@@ -109,10 +126,8 @@
 
 - (void) updateCurrentDayWithDay:(NSString *)newDay    {
     for (Day *dayTemp in Days)	{
-        if ([[dayTemp getName] isEqualToString:newDay]) {
+        if ([[dayTemp getName] isEqualToString:newDay])
             currentDay = dayTemp;
-            //break;
-        }
     }
     [self.tableView reloadData];
 }

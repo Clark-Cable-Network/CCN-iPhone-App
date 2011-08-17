@@ -77,7 +77,6 @@ namespaceURI:(NSString *)namespaceURI qualifiedName:(NSString *)qName {
                 [newDay setName:eventTemp.Day];
                 [newDay addEvent:eventTemp];
                 [Days addObject:newDay];
-                //Need to develop method to reorder days in the correct order.
             }
         }
 		[currentElementValue setString:@""];
@@ -88,26 +87,50 @@ namespaceURI:(NSString *)namespaceURI qualifiedName:(NSString *)qName {
 -(int)numberForDayOfTheWeek:(NSString*)dayOfTheWeek   {
     if ([dayOfTheWeek isEqualToString:@"Mon"])
         return 0;
-    else
-        if ([dayOfTheWeek isEqualToString:@"Tue"])
+    else if ([dayOfTheWeek isEqualToString:@"Tue"])
             return 1;
-        else
-            if ([dayOfTheWeek isEqualToString:@"Wed"])
+        else if ([dayOfTheWeek isEqualToString:@"Wed"])
                 return 2;
-            else
-                if ([dayOfTheWeek isEqualToString:@"Thu"] || [dayOfTheWeek isEqualToString:@"Thur"])
+            else if ([dayOfTheWeek isEqualToString:@"Thu"] || [dayOfTheWeek isEqualToString:@"Thur"])
                     return 3;
-                else
-                    if ([dayOfTheWeek isEqualToString:@"Fri"])
+                else if ([dayOfTheWeek isEqualToString:@"Fri"])
                         return 4;
-                    else
-                        if ([dayOfTheWeek isEqualToString:@"Sat"])
+                    else if ([dayOfTheWeek isEqualToString:@"Sat"])
                             return 5;
-                        else
-                            if ([dayOfTheWeek isEqualToString:@"Sun"])
+                        else if ([dayOfTheWeek isEqualToString:@"Sun"])
                                 return 6;
                             else
                                 return -1;
+}
+
+-(NSString*)dayOfTheWeekForNumber:(int)number   {
+    switch (number) {
+        case 0:
+            return @"Mon";
+            break;
+        case 1:
+            return @"Tue";
+            break;
+        case 2:
+            return @"Wed";
+            break;
+        case 3:
+            return @"Thur";
+            break;
+        case 4:
+            return @"Fri";
+            break;
+        case 5:
+            return @"Sat";
+            break;
+        case 6:
+            return @"Sun";
+            break;
+            
+        default:
+            return nil;
+            break;
+    }
 }
 
 -(NSMutableArray*)getDays	{
@@ -138,6 +161,13 @@ namespaceURI:(NSString *)namespaceURI qualifiedName:(NSString *)qName {
             [tempDays replaceObjectAtIndex:indexOfDay withObject:dayTemp];
         else
             [tempDays addObject:dayTemp];
+    }
+    if ([tempDays count] == 0) {
+        for (int Count = 0; Count < 7; Count++) {
+            Day *tempDay = [[Day alloc] init];
+            [tempDay setName:[self dayOfTheWeekForNumber:Count]];
+            [tempDays addObject:tempDay];
+        }
     }
     [Days release];
 	return tempDays;
