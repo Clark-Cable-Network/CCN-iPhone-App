@@ -88,14 +88,16 @@
     return endTimes;
 }
 - (int)getStartHour {
+    int startHour = [[[startTime componentsSeparatedByString:@":"] objectAtIndex:0] intValue];
     if ([[[startTime componentsSeparatedByString:@" "] objectAtIndex:1] isEqualToString:@"AM"]) {
-        int startHour = [[[startTime componentsSeparatedByString:@":"] objectAtIndex:0] intValue];
         if (startHour == 12)
             return 0;
         else
             return startHour;
     }
     else    {
+        if (startHour == 12)
+            return 12;
         return [[[startTime componentsSeparatedByString:@":"] objectAtIndex:0] intValue]+12;
     }
 }
