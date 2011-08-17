@@ -139,6 +139,7 @@ namespaceURI:(NSString *)namespaceURI qualifiedName:(NSString *)qName {
         else
             [tempDays addObject:dayTemp];
     }
+    [Days release];
 	return tempDays;
 }
 
