@@ -295,10 +295,6 @@
         [airTimes addObjectsFromArray:[tempDay eventsWithName:[selectedEvent getName]]];
     }
     dvController.airTimes = airTimes;
-    NSLog(@"Matching events are.");
-    for (Event *tempEvent in airTimes) {
-        NSLog(@"%@ at %d on %@", [tempEvent getName], [tempEvent getStartTime], [tempEvent getDay]);
-    }
     
 	[self.navigationController pushViewController:dvController animated:YES];
 	[dvController release];
