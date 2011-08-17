@@ -2,7 +2,7 @@
 <archive type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="7.10">
 	<data>
 		<int key="IBDocument.SystemTarget">1280</int>
-		<string key="IBDocument.SystemVersion">11A511</string>
+		<string key="IBDocument.SystemVersion">11B26</string>
 		<string key="IBDocument.InterfaceBuilderVersion">1891</string>
 		<string key="IBDocument.AppKitVersion">1138</string>
 		<string key="IBDocument.HIToolboxVersion">566.00</string>
@@ -49,7 +49,7 @@
 							<object class="IBUILabel" id="878788587">
 								<reference key="NSNextResponder" ref="267565252"/>
 								<int key="NSvFlags">292</int>
-								<string key="NSFrame">{{8, 0}, {220, 37}}</string>
+								<string key="NSFrame">{{8, 0}, {187, 37}}</string>
 								<reference key="NSSuperview" ref="267565252"/>
 								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="885519924"/>
@@ -129,7 +129,7 @@
 								<string key="NSFrame">{{8, 57}, {187, 28}}</string>
 								<reference key="NSSuperview" ref="267565252"/>
 								<reference key="NSWindow"/>
-								<reference key="NSNextKeyView" ref="949906778"/>
+								<reference key="NSNextKeyView" ref="97422873"/>
 								<string key="NSReuseIdentifierKey">_NS:129</string>
 								<bool key="IBUIOpaque">NO</bool>
 								<bool key="IBUIClipsSubviews">YES</bool>
@@ -157,6 +157,7 @@
 								<string key="NSFrame">{{8, 80}, {187, 28}}</string>
 								<reference key="NSSuperview" ref="267565252"/>
 								<reference key="NSWindow"/>
+								<reference key="NSNextKeyView" ref="276001432"/>
 								<string key="NSReuseIdentifierKey">_NS:129</string>
 								<bool key="IBUIOpaque">NO</bool>
 								<bool key="IBUIClipsSubviews">YES</bool>
@@ -177,6 +178,7 @@
 								<string key="NSFrame">{{8, 104}, {185, 21}}</string>
 								<reference key="NSSuperview" ref="267565252"/>
 								<reference key="NSWindow"/>
+								<reference key="NSNextKeyView" ref="949906778"/>
 								<string key="NSReuseIdentifierKey">_NS:129</string>
 								<bool key="IBUIOpaque">NO</bool>
 								<bool key="IBUIClipsSubviews">YES</bool>
@@ -412,6 +414,7 @@
 							<string>Image</string>
 							<string>ScrollView</string>
 							<string>Title</string>
+							<string>alsoPlayingLabel</string>
 							<string>endTimeLabel</string>
 							<string>startTimeLabel</string>
 							<string>subTitle</string>
@@ -420,6 +423,7 @@
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<string>UIImageView</string>
 							<string>UIScrollView</string>
+							<string>UILabel</string>
 							<string>UILabel</string>
 							<string>UILabel</string>
 							<string>UILabel</string>
@@ -433,6 +437,7 @@
 							<string>Image</string>
 							<string>ScrollView</string>
 							<string>Title</string>
+							<string>alsoPlayingLabel</string>
 							<string>endTimeLabel</string>
 							<string>startTimeLabel</string>
 							<string>subTitle</string>
@@ -449,6 +454,10 @@
 							</object>
 							<object class="IBToOneOutletInfo">
 								<string key="name">Title</string>
+								<string key="candidateClassName">UILabel</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">alsoPlayingLabel</string>
 								<string key="candidateClassName">UILabel</string>
 							</object>
 							<object class="IBToOneOutletInfo">
