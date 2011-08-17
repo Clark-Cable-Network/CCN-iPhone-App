@@ -37,11 +37,9 @@
 }
 
 - (void) viewDidAppear:(BOOL)animated  {
-    if (!justLoaded)    {
-        if ([NewsItems count] == 0) {
-            [self loadNewsItems];
-            [self.tableView reloadData];
-        }
+    if (!justLoaded && [NewsItems count] == 0)    {
+        [self loadNewsItems];
+        [self.tableView reloadData];
     }
     else
         justLoaded = NO;

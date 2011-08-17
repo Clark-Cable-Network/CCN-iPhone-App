@@ -42,11 +42,9 @@
 }
 
 - (void) viewDidAppear:(BOOL)animated  {
-    if (!justLoaded)    {
-        if ([Shows count] == 0) {
-            [self loadShows];
-            [self.tableView reloadData];
-        }
+    if (!justLoaded && [Shows count] == 0)    {
+        [self loadShows];
+        [self.tableView reloadData];
     }
     else
         justLoaded = NO;
