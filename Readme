@@ -2,5 +2,4 @@ Things that need to get done for 1.0 release.
 1. This has been mostly fixed. Now the uiimageview mearly flashes gray while reloading. (Fix bug that causes images to not display even when they are loaded in the schedule view.)
 2. Create method for viewing other days movie is playing in the event view controller.
 3. Fix Search in Schedule view.
-4. When taking the app out of the background the no internet connection displays multiple times.
-5. There is a slight delay when a section is selected before it appears. Should have an overlay on the section with a spinner to indicated that it is loading and have the section appear immediately.
+4. There is a slight delay when a section is selected before it appears. Should have an overlay on the section with a spinner to indicated that it is loading and have the section appear immediately.
