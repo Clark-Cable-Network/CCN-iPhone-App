@@ -32,7 +32,7 @@
     
     int tableViewHeightSet = [currentDay indexOfEventAfterHour:[components hour] andMinute:[components minute]]*171 + 84;
     if (tableViewHeightSet != 84)
-        [self.tableView setContentOffset:CGPointMake(0, tableViewHeightSet) animated:YES];
+        [self.tableView setContentOffset:CGPointMake(0, tableViewHeightSet) animated:NO];
 }
 
 - (void)viewDidLoad {
@@ -76,7 +76,7 @@
     }
     else
         justLoaded = NO;
-    [self loadImagesForOnscreenRows];
+    //[self loadImagesForOnscreenRows];
 }
 
 -(void)loadShows	{
@@ -153,7 +153,7 @@
         currentDay = [Days objectAtIndex:tempButton.tag-1];
     }
     [self.tableView reloadData];
-    [self loadImagesForOnscreenRows];
+    [self loadImagesForCurrentDay];
 }
 
 #pragma mark Table view methods
@@ -433,15 +433,11 @@
     [ImageDownloader release];
 }
 
-// this method is used in case the user scrolled into a set of cells that don't have their app icons yet
-- (void)loadImagesForOnscreenRows
-{
-    NSArray *visiblePaths = [self.tableView indexPathsForVisibleRows];
-    for (int i = 0; i < [visiblePaths count]; i++)  {
-        NSIndexPath *indexPath = [visiblePaths objectAtIndex:i];
-        UIImageView *imageView = [[[currentDay getEvents] objectAtIndex:indexPath.row] getImageView];;
+- (void)loadImagesForCurrentDay {
+    for (int Count = 0; Count < [self.tableView numberOfRowsInSection:0]; Count++) {
+        UIImageView *imageView = [[[currentDay getEvents] objectAtIndex:Count] getImageView];
         if (imageView.image == nil && imageView.hidden == NO) {
-            [self downloadIcon:imageView withURL:[[[currentDay getEvents] objectAtIndex:indexPath.row] getImage]];
+            [self downloadIcon:imageView withURL:[[[currentDay getEvents] objectAtIndex:Count] getImage]];
         }
     }
 }
@@ -452,20 +448,6 @@
 
 #pragma mark -
 #pragma mark Lazy Image Loading
-
-// Load images for all onscreen rows when scrolling is finished
-- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
-{
-    if (!decelerate)
-	{
-        [self loadImagesForOnscreenRows];
-    }
-}
-
-- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
-{
-    [self loadImagesForOnscreenRows];
-}
 
 - (void) checkNetworkStatus:(NSNotification *)notice
 {
