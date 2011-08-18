@@ -82,7 +82,7 @@ int Height;   //Add to this for each new element.
         NextIdentifier = currentString;
     }
     
-    if ([[selectedBody objectAtIndex:([selectedBody count] - 2)] isEqualToString:@"V"]) {
+    if ([[selectedBody objectAtIndex:([selectedBody count] - 2)] isEqualToString:@"V"] || [[selectedBody objectAtIndex:([selectedBody count] - 2)] isEqualToString:@"I"]) {
         Height += 15;
     }
     
