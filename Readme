@@ -4,4 +4,3 @@ Things that need to get done for 1.0 release.
 3. Fix Search in Schedule view.
 4. When taking the app out of the background the no internet connection displays multiple times.
 5. There is a slight delay when a section is selected before it appears. Should have an overlay on the section with a spinner to indicated that it is loading and have the section appear immediately.
-6. Fix bug where in the schedule view the images do not automatically load if the view is moved to corresponde with the time. The top images are loaded not the other ones. (Maybe just make it so that it is not animated if I want to do it the lazy way).
