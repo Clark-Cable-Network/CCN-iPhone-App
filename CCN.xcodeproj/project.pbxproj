@@ -30,6 +30,7 @@
 		148C3D7C12C7A05500C08914 /* OverlayView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 148C3D7A12C7A05500C08914 /* OverlayView.xib */; };
 		1490771513C9EC4400614EDB /* XMLParserSchedule.m in Sources */ = {isa = PBXBuildFile; fileRef = 1490771313C9EC4400614EDB /* XMLParserSchedule.m */; };
 		14A66A81132421CE0079A69A /* ImageDownload.m in Sources */ = {isa = PBXBuildFile; fileRef = 14A66A7F132421CE0079A69A /* ImageDownload.m */; };
+		14ADD0D11412D47B002EADB4 /* ScheduleIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 14ADD0D01412D47B002EADB4 /* ScheduleIcon.png */; };
 		14BD011F12DE5B7700673AE1 /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 14BD011E12DE5B7700673AE1 /* Icon.png */; };
 		14C9018F12BFF20D005A287D /* DetailView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 14C9018E12BFF20D005A287D /* DetailView.xib */; };
 		14C9019C12BFF2AA005A287D /* DetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 14C9019B12BFF2AA005A287D /* DetailViewController.m */; };
@@ -86,6 +87,7 @@
 		1490771413C9EC4400614EDB /* XMLParserSchedule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XMLParserSchedule.h; sourceTree = "<group>"; };
 		14A66A7F132421CE0079A69A /* ImageDownload.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageDownload.m; sourceTree = "<group>"; };
 		14A66A80132421CE0079A69A /* ImageDownload.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageDownload.h; sourceTree = "<group>"; };
+		14ADD0D01412D47B002EADB4 /* ScheduleIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ScheduleIcon.png; sourceTree = "<group>"; };
 		14BD011E12DE5B7700673AE1 /* Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon.png; sourceTree = "<group>"; };
 		14C9018E12BFF20D005A287D /* DetailView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DetailView.xib; sourceTree = "<group>"; };
 		14C9019A12BFF2AA005A287D /* DetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DetailViewController.h; sourceTree = "<group>"; };
@@ -202,6 +204,7 @@
 				1486341D12E242DD003F1E51 /* Join Us!.png */,
 				148634B212E25C16003F1E51 /* VideosIcon.png */,
 				148634BC12E26292003F1E51 /* NewsIcon.png */,
+				14ADD0D01412D47B002EADB4 /* ScheduleIcon.png */,
 				148634C512E358F5003F1E51 /* JoinUsIcon.png */,
 				1486350B12E36C92003F1E51 /* StartUpImage.png */,
 			);
@@ -334,6 +337,7 @@
 				148B6B63130046F10063D4ED /* Entitlements.plist in Resources */,
 				1460786113BEA87B008EE9DD /* ScheduleView.xib in Resources */,
 				1400D02C13D4FF2F00E8F12F /* ScheduleDetailView.xib in Resources */,
+				14ADD0D11412D47B002EADB4 /* ScheduleIcon.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
