@@ -15,7 +15,6 @@
 	IBOutlet UIImageView *Image;
     Event *selectedEvent;
     int day;
-	NSString *selectedTitle, *selectedImage, *navigationBar;
     NSMutableArray *selectedBody, *airTimes;
 	NSThread *loadImage;
 	BOOL videoExists;
@@ -24,9 +23,6 @@
 - (void)embedYouTube:(NSString *)urlString frame:(CGRect)frame;
 - (void)setDay:(int)newDay;
 
-@property (nonatomic, retain) NSString *selectedTitle;
-@property (nonatomic, retain) NSString *selectedImage;
-@property (nonatomic, retain) NSString *navigationBar;
 @property (nonatomic, retain) NSMutableArray *selectedBody;
 @property (nonatomic, retain) NSMutableArray *airTimes;
 @property (nonatomic, retain) UIScrollView *ScrollView;

@@ -73,6 +73,16 @@
     }
     return days;
 }
+- (NSString*)getDaysString  {
+    NSString *days = [allTimes objectAtIndex:0], *lastDay = [allTimes objectAtIndex:0];
+    for (int Count = 3; Count < [allTimes count]; Count = Count+3) {
+        if (![[allTimes objectAtIndex:Count] isEqualToString:lastDay]) {
+            days = [days stringByAppendingFormat:@", %@",[allTimes objectAtIndex:Count]];
+            lastDay = [allTimes objectAtIndex:Count];
+        }
+    }
+    return days;
+}
 - (NSMutableArray*) getStartTimes {
     NSMutableArray *startTimes = [[NSMutableArray alloc] init];
     for (int Count = 1; Count < [allTimes count]; Count = Count+3) {
@@ -157,6 +167,7 @@
     [copy setEndTime:[endTime copy]];
     [copy setImage:[Image copy]];
     [copy setBody:bodyCopy];
+    [copy setAllTimes:[allTimes copy]];
 	return copy;
 }
 

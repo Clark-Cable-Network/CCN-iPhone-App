@@ -243,11 +243,8 @@
 	//Initialize the detail view controller and display it.
 	
 	ScheduleDetailViewController *dvController = [[ScheduleDetailViewController alloc] initWithNibName:@"ScheduleDetailView" bundle:[NSBundle mainBundle]];
-	dvController.selectedTitle = [selectedEvent getName];
     [dvController setDay:selectedButton];
-    dvController.selectedImage = [selectedEvent getImage];
     dvController.selectedBody = [selectedEvent getBody];
-	dvController.navigationBar = [selectedEvent getName];
     dvController.selectedEvent = selectedEvent;
     
     NSMutableArray *airTimes = [[NSMutableArray alloc] init];

@@ -11,7 +11,7 @@
 
 @implementation ScheduleDetailViewController
 
-@synthesize selectedTitle, Title, subTitle, startTimeLabel, endTimeLabel, alsoPlayingLabel, selectedEvent, selectedBody, airTimes, selectedImage, Image, loadImage, ScrollView, navigationBar;
+@synthesize Title, subTitle, startTimeLabel, endTimeLabel, alsoPlayingLabel, selectedEvent, selectedBody, airTimes, Image, loadImage, ScrollView;
 
 int Height;   //Add to this for each new element.
 
@@ -43,12 +43,12 @@ int Height;   //Add to this for each new element.
 
     Height = 165;
     BOOL First = YES;
-    Title.text = selectedTitle;
+    Title.text = selectedEvent.Name;
 	subTitle.text = [self dayStringGenerator];
-    self.navigationItem.title = navigationBar; //Set the title of the navigation bar
+    self.navigationItem.title = [selectedEvent getName]; //Set the title of the navigation bar
     
     ImageDownload *ImageDownloader = [[ImageDownload alloc] init];
-    ImageDownloader.urlString = selectedImage;
+    ImageDownloader.urlString = [selectedEvent getImage];
     ImageDownloader.imageView = Image;
     if (ImageDownloader.image == nil) {
         ImageDownloader.delegate = self;
@@ -56,6 +56,13 @@ int Height;   //Add to this for each new element.
     
     startTimeLabel.text = [startTimeLabel.text stringByAppendingString:[selectedEvent getStartTime]];
     endTimeLabel.text = [endTimeLabel.text stringByAppendingString:[selectedEvent getEndTime]];
+    alsoPlayingLabel.text = [alsoPlayingLabel.text stringByAppendingString:[selectedEvent getDaysString]];
+    if (alsoPlayingLabel.text.length < 22)
+        [alsoPlayingLabel setFrame:CGRectMake(8, 104, 185, 20)];
+    else    {
+        [alsoPlayingLabel setFrame:CGRectMake(8, 104, 185, 40)];
+        [alsoPlayingLabel setNumberOfLines:2];
+    }
     
     NSString *NextIdentifier;
     for (NSString *currentString in selectedBody)   {

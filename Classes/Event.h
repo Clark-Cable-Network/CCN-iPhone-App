@@ -34,6 +34,7 @@
 - (void) setImageView:(UIImageView *)newImageView;
 - (NSString*)getName;
 - (NSString*)getDay;
+- (NSString*)getDaysString;
 - (NSString*)getStartTime;
 - (int)getStartHour;
 - (int)getStartMinute;
