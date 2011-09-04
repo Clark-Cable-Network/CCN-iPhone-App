@@ -14,9 +14,7 @@
 
 @interface ScheduleViewController : UITableViewController {
 	NSMutableArray *Days;
-	NSMutableArray *searchEvents;
-	IBOutlet UISearchBar *searchBar;
-	BOOL searching, justLoaded, letUserSelectRow;
+	BOOL justLoaded, letUserSelectRow;
     UIScrollView *daySelector;
     int selectedButton;
     Day *currentDay;
@@ -27,8 +25,6 @@
 
 - (UITableViewCell *) getCellContentView:(NSString *)cellIdentifier;
 - (void) loadShows;
-- (void) searchTableView;
-- (void) doneSearching_Clicked:(id)sender;
 - (void) checkNetworkStatus:(NSNotification *)notice;
 
 @end

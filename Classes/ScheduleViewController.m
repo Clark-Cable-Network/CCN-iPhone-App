@@ -30,8 +30,8 @@
     selectedButton = dayOfTheWeek; //Remove after implementing current time code.
     [self daySelected:[daySelector viewWithTag:dayOfTheWeek]];
     
-    int tableViewHeightSet = [currentDay indexOfEventAfterHour:[components hour] andMinute:[components minute]]*171 + 84;
-    if (tableViewHeightSet != 84)
+    int tableViewHeightSet = [currentDay indexOfEventAfterHour:[components hour] andMinute:[components minute]]*171 + 40;
+    if (tableViewHeightSet != 40)
         [self.tableView setContentOffset:CGPointMake(0, tableViewHeightSet) animated:NO];
 }
 
@@ -43,15 +43,11 @@
 //	hostReachable = [[Reachability reachabilityWithHostName: @"www.clarku.edu"] retain];
 //	[hostReachable startNotifier];
 	
-    searching = NO;
 	letUserSelectRow = YES;
     justLoaded = YES;
 	Days = [[NSMutableArray alloc] init];
 	
 	[self loadShows];
-	
-	//Initialize the copy array.
-	searchEvents = [[NSMutableArray alloc] init];
 	
 	self.navigationItem.title = @"Schedule";
     
@@ -96,7 +92,8 @@
 	[xmlParser parse];
     
     if (justLoaded) {
-        daySelector = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 44, 320, 40)];
+        daySelector = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, 320, 40)];
+        [daySelector setShowsHorizontalScrollIndicator:NO];
         int Count = 0;
         [Days removeAllObjects];
         for (Day *dayTemp in [parser getDays])	{
@@ -112,14 +109,11 @@
         }
         [daySelector setContentSize:CGSizeMake(Count*70+5, 40)];
         
-        //Add the search bar and daySelector
-        UIView *tableHeader = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 84)];
-        [tableHeader addSubview:searchBar];
+        //Add the daySelector
+        UIView *tableHeader = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 40)];
         [tableHeader addSubview:daySelector];
         self.tableView.tableHeaderView = tableHeader;
     }
-    
-	searchBar.autocorrectionType = UITextAutocorrectionTypeNo;
 	
 	[xmlParser release];
 }
@@ -212,47 +206,19 @@
     cell.frame = CGRectMake(0, 0, 300, 171);
 	
 	// Set up the cell...
-	if (searching)	{
-        lblTemp1.text = [[searchEvents objectAtIndex:indexPath.row] getName];
+    NSString *Temp = [[[currentDay getEvents] objectAtIndex:indexPath.row] getDescription];
+    lblTemp1.text = [[[currentDay getEvents] objectAtIndex:indexPath.row] getName];
+    lblTemp2.numberOfLines = 8;
+    CGSize lblTemp2Size = [Temp sizeWithFont:lblTemp2.font constrainedToSize:CGSizeMake(181, 130)];
+    lblTemp2.frame = CGRectMake(10, 40, 181, lblTemp2Size.height);
+    lblTemp2.text = Temp;
+    
+    lblTemp3.text = [[[[[currentDay getEvents] objectAtIndex:indexPath.row] getStartTime] stringByAppendingString:@" - "]stringByAppendingString:[[[currentDay getEvents] objectAtIndex:indexPath.row] getEndTime]];
+    lblTemp3.frame = CGRectMake(10, 22, 181, 20);
         
-		NSString *Temp = @"";
-        //These are returning with 0 objects for some reason.
-        NSMutableArray *days = [[searchEvents objectAtIndex:indexPath.row] getDays];
-        NSMutableArray *startTimes = [[searchEvents objectAtIndex:indexPath.row] getStartTimes];
-        NSMutableArray *endTimes = [[searchEvents objectAtIndex:indexPath.row] getEndTimes];
-        
-        NSString *lastDay;
-        for (int Count = 0; Count < [days count]; Count++) {
-            if (lastDay == nil || ![lastDay isEqualToString:[days objectAtIndex:Count]])
-                Temp = [Temp stringByAppendingString:[NSString stringWithFormat:@"%@\n", [days objectAtIndex:Count]]];
-            else
-                Temp = [Temp stringByAppendingString:[NSString stringWithFormat:@"  %@ - %@\n", [startTimes objectAtIndex:Count], [endTimes objectAtIndex:Count]]];
-        }
-        
-        lblTemp3.numberOfLines = 8;
-        CGSize lblTemp3Size = [Temp sizeWithFont:lblTemp3.font constrainedToSize:CGSizeMake(181, 130)];
-        lblTemp3.frame = CGRectMake(10, 40, 181, lblTemp3Size.height);
-        lblTemp3.text = Temp;
-        
-        UIImageView *imageView = [[[currentDay getEvents] objectAtIndex:indexPath.row] getImageView];;
-        imageView.tag = 3;
-        [cell addSubview:imageView];
-	}
-	else	{
-		NSString *Temp = [[[currentDay getEvents] objectAtIndex:indexPath.row] getDescription];
-		lblTemp1.text = [[[currentDay getEvents] objectAtIndex:indexPath.row] getName];
-        lblTemp2.numberOfLines = 8;
-        CGSize lblTemp2Size = [Temp sizeWithFont:lblTemp2.font constrainedToSize:CGSizeMake(181, 130)];
-        lblTemp2.frame = CGRectMake(10, 40, 181, lblTemp2Size.height);
-		lblTemp2.text = Temp;
-        
-        lblTemp3.text = [[[[[currentDay getEvents] objectAtIndex:indexPath.row] getStartTime] stringByAppendingString:@" - "] stringByAppendingString:[[[currentDay getEvents] objectAtIndex:indexPath.row] getEndTime]];
-        lblTemp3.frame = CGRectMake(10, 22, 181, 20);
-        
-        UIImageView *imageView = [[[currentDay getEvents] objectAtIndex:indexPath.row] getImageView];
-        imageView.tag = 3;
-        [cell addSubview:imageView];
-	}
+    UIImageView *imageView = [[[currentDay getEvents] objectAtIndex:indexPath.row] getImageView];
+    imageView.tag = 3;
+    [cell addSubview:imageView];
 	return cell;
 }
 
@@ -262,10 +228,7 @@
 
 // Customize the number of rows in the table view.
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-	if (searching)
-		return [searchEvents count];
-	else
-        return [[currentDay getEvents] count];
+    return [[currentDay getEvents] count];
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
@@ -276,10 +239,7 @@
 	//Get the selected episode
 	Event *selectedEvent = [[Event alloc] init];
 	
-	if (searching)
-		selectedEvent = [searchEvents objectAtIndex:indexPath.row];
-	else
-		selectedEvent = [[currentDay getEvents] objectAtIndex:indexPath.row];
+    selectedEvent = [[currentDay getEvents] objectAtIndex:indexPath.row];
 	//Initialize the detail view controller and display it.
 	
 	ScheduleDetailViewController *dvController = [[ScheduleDetailViewController alloc] initWithNibName:@"ScheduleDetailView" bundle:[NSBundle mainBundle]];
@@ -314,110 +274,6 @@
 
 - (void)tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath {
 	[self tableView:tableView didSelectRowAtIndexPath:indexPath];
-}
-
-#pragma mark -
-#pragma mark Search Bar 
-
-- (void) searchBarTextDidBeginEditing:(UISearchBar *)theSearchBar {
-	//Add the overlay view.
-	if(ovController == nil)
-		ovController = [[OverlayViewController alloc] initWithNibName:@"OverlayView" bundle:[NSBundle mainBundle]];
-	
-	CGFloat yaxis = self.navigationController.navigationBar.frame.size.height;
-	CGFloat width = self.view.frame.size.width;
-	CGFloat height = self.view.frame.size.height;
-	
-	//Parameters x = origion on x-axis, y = origon on y-axis.
-	CGRect frame = CGRectMake(0, yaxis, width, height);
-	ovController.view.frame = frame;
-	ovController.view.backgroundColor = [UIColor grayColor];
-	ovController.view.alpha = 0.5;
-	
-	ovController.rvController = self;
-	
-	[self.tableView insertSubview:ovController.view aboveSubview:self.parentViewController.view];
-	
-	searching = YES;
-	letUserSelectRow = NO;
-	self.tableView.scrollEnabled = NO;
-	
-	//Add the done button.
-	self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc]
-											   initWithBarButtonSystemItem:UIBarButtonSystemItemDone
-											   target:self action:@selector(doneSearching_Clicked:)] autorelease];
-}
-
-- (void)searchBar:(UISearchBar *)theSearchBar textDidChange:(NSString *)searchText {
-	//Remove all objects first.
-	[searchEvents removeAllObjects];
-	
-	if([searchText length] > 0) {
-		[ovController.view removeFromSuperview];
-		searching = YES;
-		letUserSelectRow = YES;
-		self.tableView.scrollEnabled = YES;
-		[self searchTableView];
-	}
-	else {
-		[self.tableView insertSubview:ovController.view aboveSubview:self.parentViewController.view];
-		
-		searching = NO;
-		letUserSelectRow = NO;
-		self.tableView.scrollEnabled = NO;
-	}
-	
-	[self.tableView reloadData];
-}
-
-- (void) searchBarSearchButtonClicked:(UISearchBar *)theSearchBar {
-	[self searchTableView];
-}
-
-- (void) searchTableView {
-	NSString *searchText = searchBar.text;
-	NSMutableArray *searchArray = [[NSMutableArray alloc] init];
-	NSMutableArray *array = [[NSMutableArray alloc] init];
-	
-	for (Day *tempDay in Days)
-	{
-		array = [tempDay getEvents];
-		[searchArray addObjectsFromArray:array];
-	}
-	
-	for (Event *eventTemp in searchArray)
-	{
-        BOOL alreadyAdded = NO;
-		NSString *sTemp = [eventTemp getName];
-		NSRange titleResultsRange = [sTemp rangeOfString:searchText options:NSCaseInsensitiveSearch];
-        
-        for (Event *searchEventTemp in searchEvents) {
-            if ([searchEventTemp.Name isEqualToString:sTemp])
-                alreadyAdded = YES;
-        }
-        
-		if (!alreadyAdded && titleResultsRange.length > 0)
-			[searchEvents addObject:eventTemp];
-	}
-	
-	[searchArray release];
-	searchArray = nil;
-}
-
-- (void) doneSearching_Clicked:(id)sender {
-	searchBar.text = @"";
-	[searchBar resignFirstResponder];
-	
-	letUserSelectRow = YES;
-	searching = NO;
-	self.navigationItem.rightBarButtonItem = nil;
-	self.tableView.scrollEnabled = YES;
-	
-	[ovController.view removeFromSuperview];
-	[ovController release];
-	ovController = nil;
-	
-	[self.tableView reloadData];
 }
 
 #pragma mark -
@@ -479,9 +335,7 @@
 -(void)dealloc	{
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
 	[Days release];
-	[searchBar release];
 	[ovController release];
-	[searchEvents release];
 	[super dealloc];
 }
 
