@@ -195,10 +195,6 @@
 		return nil;
 }
 
-/*- (UITableViewCellAccessoryType)tableView:(UITableView *)tableView accessoryTypeForRowWithIndexPath:(NSIndexPath *)indexPath {
-	return UITableViewCellAccessoryDisclosureIndicator;
-}*/
-
 - (void)tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath {
 	[self tableView:tableView didSelectRowAtIndexPath:indexPath];
 }
@@ -345,15 +341,14 @@
 // Load images for all onscreen rows when scrolling is finished
 - (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
 {
-    if (!decelerate)
-	{
+    if (!decelerate && !searching)
         [self loadImagesForOnscreenRows];
-    }
 }
 
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
 {
-    [self loadImagesForOnscreenRows];
+    if (!searching)
+        [self loadImagesForOnscreenRows];
 }
 
 - (void) checkNetworkStatus:(NSNotification *)notice
