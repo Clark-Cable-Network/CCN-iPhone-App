@@ -47,7 +47,7 @@
 }
 
 -(void)loadNewsItems	{
-    NSURL *url = [[NSURL alloc] initWithString:@"http://www.clarku.edu/students/MOVED/ccn-move/App/News-New.xml"];
+    NSURL *url = [[NSURL alloc] initWithString:@"http://www.clarku.edu/students/MOVED/ccn-move/App/1.0/News.xml"];
 	UIApplication *app = [UIApplication sharedApplication];
 	app.networkActivityIndicatorVisible = YES;
 	NSXMLParser *xmlParser = [[NSXMLParser alloc] initWithContentsOfURL:url];
